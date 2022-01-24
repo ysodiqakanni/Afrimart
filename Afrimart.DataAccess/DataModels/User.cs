@@ -10,13 +10,14 @@ namespace Afrimart.DataAccess.DataModels
     { 
         [Required]
         public Guid GuidId { get; set; } = Guid.NewGuid();
-        [EmailAddress]
+
+        [Required]
         public string Email { get; set; }
         [Required]
         public byte[] PasswordHash { get; set; }
         [Required]
         public byte[] PasswordSalt { get; set; }
-        [Required]
+
         public bool ConfirmEmail { get; set; } 
         public string PhoneNumber { get; set; }  
         public string LastName { get; set; } 

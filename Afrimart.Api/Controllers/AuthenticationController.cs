@@ -24,6 +24,7 @@ namespace Afrimart.Api.Controllers
             _userService = userService;
         }
 
+        [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginRequestDto loginRequest)
         {
             var user = await _userService.GetUserByEmailAndPassword(loginRequest.Email, loginRequest.Password);

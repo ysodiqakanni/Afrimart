@@ -37,7 +37,8 @@ namespace Afrimart.Api
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             
             services.AddScoped<IProductCategoryService, ProductCategoryService>();
-           
+            services.AddScoped<IUserService, UserService>();
+
 
         }
 
