@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
+using System.Text;
 using System.Threading.Tasks;
 using Afrimart.DataAccess.DataModels;
 using Afrimart.Dto.Authentication;
@@ -48,7 +49,7 @@ namespace Afrimart.Api.Controllers
 
         private const string Secret = "This is a temporary secreeet that mussst beebee replced rewritten";
 
-        private string GenerateToken(string username, int expireMinutes = 7)
+        private string GenerateToken(string username, int expireMinutes = 50)
         {
             var symmetricKey = Convert.FromBase64String(Secret);
             var tokenHandler = new JwtSecurityTokenHandler();
@@ -63,9 +64,13 @@ namespace Afrimart.Api.Controllers
 
                 Expires = now.AddMinutes(Convert.ToInt32(expireMinutes)),
 
+                //SigningCredentials = new SigningCredentials(
+                //    new SymmetricSecurityKey(symmetricKey),
+                //  SecurityAlgorithms.HmacSha256Signature)
                 SigningCredentials = new SigningCredentials(
-                    new SymmetricSecurityKey(symmetricKey),
-                    SecurityAlgorithms.HmacSha256Signature)
+                    new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Secret)),
+                    SecurityAlgorithms.HmacSha256)
+               
             };
 
             var stoken = tokenHandler.CreateToken(tokenDescriptor);

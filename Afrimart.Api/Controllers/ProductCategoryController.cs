@@ -6,11 +6,13 @@ using System.Linq;
 using System.Threading.Tasks;
 using Afrimart.DataAccess.DataModels;
 using Afrimart.Service.Contracts;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Afrimart.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class ProductCategoryController : ControllerBase
     {
         private readonly IProductCategoryService _productCategoryService;

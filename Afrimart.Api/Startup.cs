@@ -9,12 +9,15 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using Afrimart.DataAccess;
 using Afrimart.DataAccess.Repositories;
 using Afrimart.Service.Contracts;
 using Afrimart.Service.Implementations;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 
 namespace Afrimart.Api
 {
@@ -39,7 +42,27 @@ namespace Afrimart.Api
             services.AddScoped<IProductCategoryService, ProductCategoryService>();
             services.AddScoped<IUserService, UserService>();
 
+            // auth
+            services.AddAuthentication(x =>
+                {
+                    x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                    x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                })
+                .AddJwtBearer(x =>
+                {
+                    x.RequireHttpsMetadata = false;
+                    x.SaveToken = true;
+                    x.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuerSigningKey = false,
+                        IssuerSigningKey =
+                            new SymmetricSecurityKey(Encoding.UTF8.GetBytes("This is a temporary secreeet that mussst beebee replced rewritten")),
+                        ValidateIssuer = false,
+                        ValidateAudience = false
+                    };
 
+                });
+            services.AddAuthorization();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -54,6 +77,7 @@ namespace Afrimart.Api
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
