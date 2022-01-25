@@ -8,6 +8,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using Afrimart.Services;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Http;
@@ -17,10 +18,12 @@ namespace Afrimart.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly ITokenService _tokenService;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, ITokenService tokenService)
         {
             _logger = logger;
+            _tokenService = tokenService;
         }
 
         public IActionResult Index()
@@ -40,13 +43,19 @@ namespace Afrimart.Controllers
                 return (RedirectToAction("Error"));
             }
 
-            var user = await AuthenticateUser(userModel.UserName, userModel.Password);
-
-            if (user == null)
+            var loginResponse = await _tokenService.Login(userModel.UserName, userModel.Password);
+            if (!loginResponse.Success)
             {
                 ModelState.AddModelError(string.Empty, "Invalid login attempt.");
                 return RedirectToAction("Index");
             }
+
+            var user = new UserModel()
+            {
+                UserName = loginResponse.User.Email,
+                Email = loginResponse.User.Email,
+                FullName = loginResponse.User.FullName 
+            }; 
 
             #region snippet1
             var claims = new List<Claim>
@@ -123,6 +132,14 @@ namespace Afrimart.Controllers
         {
             return View();
         }
+
+        [Authorize(Roles = "Seller")]
+        //[Authorize(Policy = "admin")]
+        public IActionResult Seller()
+        {
+            return RedirectToAction("Test");
+        }
+
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {

@@ -9,4 +9,9 @@
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="3.1.18" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Afrimart.Dto\Afrimart.Dto.csproj" />
+    <ProjectReference Include="..\Architecture\ServiceHelper\ServiceHelper.csproj" />
+  </ItemGroup>
+
 </Project>

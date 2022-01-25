@@ -9,7 +9,7 @@ namespace Afrimart.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class AutnenticationController : ControllerBase
+    public class AuthenticationController : ControllerBase
     {
         public IActionResult Login()
         {

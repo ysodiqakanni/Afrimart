@@ -7,17 +7,19 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Afrimart", "Afrimart\Afrima
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Architecture", "Architecture", "{984C5990-10B4-4559-976A-7EB2EF3DA858}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataAccess", "Architecture\DataAccess\DataAccess.csproj", "{AAE8A47E-000C-4CA4-8251-982C84B05686}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataAccess", "Architecture\DataAccess\DataAccess.csproj", "{AAE8A47E-000C-4CA4-8251-982C84B05686}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataModels", "Architecture\DataModels\DataModels.csproj", "{B2F5D7D1-E8D5-4A98-AC34-30DA7B470D15}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataModels", "Architecture\DataModels\DataModels.csproj", "{B2F5D7D1-E8D5-4A98-AC34-30DA7B470D15}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Afrimart.Api", "Afrimart.Api\Afrimart.Api.csproj", "{9D3A35AA-4A0E-4883-9E72-0672107B69FD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Afrimart.Api", "Afrimart.Api\Afrimart.Api.csproj", "{9D3A35AA-4A0E-4883-9E72-0672107B69FD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Afrimart.DataAccess", "Afrimart.DataAccess\Afrimart.DataAccess.csproj", "{6F4D536C-C9E1-4FAA-80E4-90D5A3A8A6E3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Afrimart.DataAccess", "Afrimart.DataAccess\Afrimart.DataAccess.csproj", "{6F4D536C-C9E1-4FAA-80E4-90D5A3A8A6E3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Afrimart.Service", "Afrimart.Service\Afrimart.Service.csproj", "{72CE6B64-4F33-41E3-8AF3-193171ABC0DF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Afrimart.Service", "Afrimart.Service\Afrimart.Service.csproj", "{72CE6B64-4F33-41E3-8AF3-193171ABC0DF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Afrimart.Dto", "Afrimart.Dto\Afrimart.Dto.csproj", "{9BE6DA41-A566-4805-BB89-4ED1A0BF06D9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Afrimart.Dto", "Afrimart.Dto\Afrimart.Dto.csproj", "{9BE6DA41-A566-4805-BB89-4ED1A0BF06D9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceHelper", "Architecture\ServiceHelper\ServiceHelper.csproj", "{C4B2AFC2-3C0D-448F-A15D-BB7BD7368C90}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -53,6 +55,10 @@ Global
 		{9BE6DA41-A566-4805-BB89-4ED1A0BF06D9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9BE6DA41-A566-4805-BB89-4ED1A0BF06D9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9BE6DA41-A566-4805-BB89-4ED1A0BF06D9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C4B2AFC2-3C0D-448F-A15D-BB7BD7368C90}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C4B2AFC2-3C0D-448F-A15D-BB7BD7368C90}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C4B2AFC2-3C0D-448F-A15D-BB7BD7368C90}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C4B2AFC2-3C0D-448F-A15D-BB7BD7368C90}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -60,6 +66,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{AAE8A47E-000C-4CA4-8251-982C84B05686} = {984C5990-10B4-4559-976A-7EB2EF3DA858}
 		{B2F5D7D1-E8D5-4A98-AC34-30DA7B470D15} = {984C5990-10B4-4559-976A-7EB2EF3DA858}
+		{C4B2AFC2-3C0D-448F-A15D-BB7BD7368C90} = {984C5990-10B4-4559-976A-7EB2EF3DA858}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {83C465BD-DFEE-4B4F-90EA-D3D34D2D4EEE}

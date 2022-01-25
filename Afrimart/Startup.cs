@@ -8,8 +8,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Afrimart.Services;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Http;
+using ServiceHelper;
 
 namespace Afrimart
 {
@@ -27,17 +29,10 @@ namespace Afrimart
         {
             services.AddControllersWithViews();
 
-            //services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-            //    .AddCookie();
+            services.AddScoped<ITokenService, TokenService>();
 
-            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-                .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme,
-                    options =>
-                    {
-                        options.LoginPath = new PathString("/home/mustlogin");
-                        options.AccessDeniedPath = new PathString("/home/denied");
-                    });
-            //services.AddAuthorization();
+            services.WebAuthSetup();
+            services.HttpClientSetup("https://localhost:44314/api");
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -58,8 +53,7 @@ namespace Afrimart
 
             app.UseRouting();
 
-            app.UseAuthentication();
-            app.UseAuthorization();
+            app.UseAuth();
 
             app.UseEndpoints(endpoints =>
             {

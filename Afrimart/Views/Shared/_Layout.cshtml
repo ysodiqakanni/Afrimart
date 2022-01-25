@@ -26,6 +26,16 @@
                         </li>
                     </ul>
                 </div>
+                @{
+                    if (User.Identity.IsAuthenticated)
+                    {
+                        <div>Hi @User.Identity.Name</div>
+                    }
+                    else
+                    {
+                        <div>Login now</div>
+                    }
+                }
             </div>
         </nav>
     </header>

@@ -31,7 +31,10 @@ namespace Afrimart.Api.Controllers
             var user = await _userService.GetUserByEmailAndPassword(loginRequest.Email, loginRequest.Password);
             if (user == null)
             {
-                return Unauthorized("User not found");
+                return Ok(new LoginResponseDto()
+                {
+                    Success = false
+                });
             }
 
             var token = GenerateToken(user.Email); 
