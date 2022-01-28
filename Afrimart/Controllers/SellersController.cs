@@ -26,7 +26,7 @@ namespace Afrimart.Controllers
         {
             return View();
         }
-
+         
         [AllowAnonymous]
         public async Task<IActionResult> Register()
         {
@@ -58,7 +58,23 @@ namespace Afrimart.Controllers
 
         public async Task<IActionResult> Onboarding()
         {
-            return View();
+            var model = new SetupSellerProfileViewModel()
+            {
+
+            };
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Onboarding(SetupSellerProfileViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                // create a store,
+                // add seller role to user
+                // link user to store
+            }
+            return View(model);
         }
     }
 }

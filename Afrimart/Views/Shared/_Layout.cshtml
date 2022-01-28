@@ -32,7 +32,9 @@
                 @{
                     if (User.Identity.IsAuthenticated)
                     {
-                        <div>Hi @User.Identity.Name</div>
+                        <div>Hi @User.Identity.Name
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Logout">Logout</a>
+                            </div>
                     }
                     else
                     {
