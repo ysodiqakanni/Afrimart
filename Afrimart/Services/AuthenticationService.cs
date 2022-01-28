@@ -5,17 +5,19 @@ using System.Net.Http;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using Afrimart.Dto;
 using Afrimart.Dto.Authentication;
+using Afrimart.Dto.Users;
 using Afrimart.Models;
 using ServiceHelper.Requests;
 
 namespace Afrimart.Services
 {
-    public class TokenService : ITokenService
+    public class AuthenticationService : IAuthenticationService
     {
         private readonly IRequestManager _requestManager;
 
-        public TokenService(IRequestManager requestManager)
+        public AuthenticationService(IRequestManager requestManager)
         {
             _requestManager = requestManager;
         }
@@ -31,5 +33,16 @@ namespace Afrimart.Services
                 HttpMethod.Post);
             return cc;
         }
+        public async Task<BaseApiResponseDto<LoginResponseDto>> Register(string email, string password)
+        {
+            var payload = new CreateUserRequestDto()
+            {
+                Email = email,
+                Password = password
+            };
+            var cc = await _requestManager.Send<CreateUserRequestDto, BaseApiResponseDto<LoginResponseDto>>("/api/Authentication/Sign-up", payload,
+                HttpMethod.Post);
+            return cc;
+        } 
     }
 }

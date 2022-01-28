@@ -18,12 +18,12 @@ namespace Afrimart.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-        private readonly ITokenService _tokenService;
+        private readonly Services.IAuthenticationService _authenticationService;
 
-        public HomeController(ILogger<HomeController> logger, ITokenService tokenService)
+        public HomeController(ILogger<HomeController> logger, Services.IAuthenticationService authenticationService)
         {
             _logger = logger;
-            _tokenService = tokenService;
+            _authenticationService = authenticationService;
         }
 
         public IActionResult Index()
@@ -43,7 +43,7 @@ namespace Afrimart.Controllers
                 return (RedirectToAction("Error"));
             }
 
-            var loginResponse = await _tokenService.Login(userModel.UserName, userModel.Password);
+            var loginResponse = await _authenticationService.Login(userModel.UserName, userModel.Password);
             if (!loginResponse.Success)
             {
                 ModelState.AddModelError(string.Empty, "Invalid login attempt.");

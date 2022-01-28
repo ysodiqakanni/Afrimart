@@ -21,7 +21,7 @@ namespace ServiceHelper
                 {
                     options.Cookie.Name = CookieAuthenticationDefaults.CookiePrefix + CookieAuthenticationDefaults.AuthenticationScheme;
                     options.Cookie.HttpOnly = true;
-                    options.LoginPath = new PathString("/");
+                    options.LoginPath = CookieAuthenticationDefaults.LoginPath;
                     options.AccessDeniedPath = CookieAuthenticationDefaults.AccessDeniedPath;
                 }
             ); 

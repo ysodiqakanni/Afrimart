@@ -19,7 +19,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Afrimart.Service", "Afrimar
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Afrimart.Dto", "Afrimart.Dto\Afrimart.Dto.csproj", "{9BE6DA41-A566-4805-BB89-4ED1A0BF06D9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceHelper", "Architecture\ServiceHelper\ServiceHelper.csproj", "{C4B2AFC2-3C0D-448F-A15D-BB7BD7368C90}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ServiceHelper", "Architecture\ServiceHelper\ServiceHelper.csproj", "{C4B2AFC2-3C0D-448F-A15D-BB7BD7368C90}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Extensions", "Architecture\Extensions\Extensions.csproj", "{E25565B7-8700-4150-A221-E8A6D732440C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -59,6 +61,10 @@ Global
 		{C4B2AFC2-3C0D-448F-A15D-BB7BD7368C90}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C4B2AFC2-3C0D-448F-A15D-BB7BD7368C90}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C4B2AFC2-3C0D-448F-A15D-BB7BD7368C90}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E25565B7-8700-4150-A221-E8A6D732440C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E25565B7-8700-4150-A221-E8A6D732440C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E25565B7-8700-4150-A221-E8A6D732440C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E25565B7-8700-4150-A221-E8A6D732440C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -67,6 +73,7 @@ Global
 		{AAE8A47E-000C-4CA4-8251-982C84B05686} = {984C5990-10B4-4559-976A-7EB2EF3DA858}
 		{B2F5D7D1-E8D5-4A98-AC34-30DA7B470D15} = {984C5990-10B4-4559-976A-7EB2EF3DA858}
 		{C4B2AFC2-3C0D-448F-A15D-BB7BD7368C90} = {984C5990-10B4-4559-976A-7EB2EF3DA858}
+		{E25565B7-8700-4150-A221-E8A6D732440C} = {984C5990-10B4-4559-976A-7EB2EF3DA858}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {83C465BD-DFEE-4B4F-90EA-D3D34D2D4EEE}

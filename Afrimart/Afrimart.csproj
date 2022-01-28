@@ -11,6 +11,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Afrimart.Dto\Afrimart.Dto.csproj" />
+    <ProjectReference Include="..\Architecture\Extensions\Extensions.csproj" />
     <ProjectReference Include="..\Architecture\ServiceHelper\ServiceHelper.csproj" />
   </ItemGroup>
 

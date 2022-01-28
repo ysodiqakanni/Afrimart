@@ -19,8 +19,7 @@ namespace Afrimart.Service.Implementations
         }
 
         public async Task<User> GetUserByEmailAndPassword(string email, string password)
-        {
-            var passwordHash = string.Empty; // Todo: hash password
+        { 
             var user = _uow.UserRepo.Find(x => x.Email.ToLower().Equals(email.ToLower())).SingleOrDefault();
             if(user == null)
             {

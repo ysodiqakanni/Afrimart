@@ -29,7 +29,9 @@ namespace Afrimart
         {
             services.AddControllersWithViews();
 
-            services.AddScoped<ITokenService, TokenService>();
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddScoped<IAuthenticationService, AuthenticationService>();
+            services.AddScoped<IAuthorizationService, AuthorizationService>();
 
             services.WebAuthSetup();
             services.HttpClientSetup("https://localhost:44314/api");

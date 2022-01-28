@@ -8,7 +8,9 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using Afrimart.DataAccess.DataModels;
+using Afrimart.Dto;
 using Afrimart.Dto.Authentication;
+using Afrimart.Dto.Users;
 using Afrimart.Service.Contracts;
 using Microsoft.IdentityModel.Tokens;
 
@@ -46,6 +48,40 @@ namespace Afrimart.Api.Controllers
                 {
                     Email = user.Email,
                     FullName = $"{user.FirstName} {user.LastName}" 
+                }
+            });
+        }
+
+        [HttpPost("sign-up")]
+        public async Task<IActionResult> SignUp([FromBody] CreateUserRequestDto request)
+        {
+            if (_userService.UserExists(request.Email))
+            {
+                var response = new BaseApiResponseDto<LoginResponseDto>()
+                {
+                    Success = false,
+                    Message = "The email is taken"
+                };
+                return Ok(response);
+            }
+
+            var user = new User()
+            {
+                Email = request.Email
+            };
+            await _userService.CreateUser(user, request.Password);
+
+            var token = GenerateToken(user.Email); 
+            return Ok(new BaseApiResponseDto<LoginResponseDto>()
+            {
+                Success = true,
+                Data = new LoginResponseDto()
+                {
+                    Token = token,
+                    User = new LoginUserDto()
+                    {
+                        Email = user.Email
+                    }
                 }
             });
         }
