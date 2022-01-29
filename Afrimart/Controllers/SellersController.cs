@@ -2,12 +2,16 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using Afrimart.Common;
+using Afrimart.Dto;
 using Afrimart.Services;
 using Afrimart.ViewModels.Sellers;
 using Microsoft.AspNetCore.Authorization;
-using IAuthorizationService = Afrimart.Services.IAuthorizationService;
+using ServiceHelper.Requests;
+using IAuthorizationService = Microsoft.AspNetCore.Authorization.IAuthorizationService;
 
 namespace Afrimart.Controllers
 {
@@ -15,12 +19,14 @@ namespace Afrimart.Controllers
     public class SellersController : Controller
     {
         private readonly IAuthenticationService _authenticationService;
-        private readonly IAuthorizationService _authorizationService;
+        private readonly IAfrimartAuthorizationService _authorizationService;
+        private readonly IRequestManager _requestManager;
 
-        public SellersController(IAuthenticationService authenticationService, IAuthorizationService authorizationService)
+        public SellersController(IAuthenticationService authenticationService, IAfrimartAuthorizationService authorizationService, IRequestManager requestManager)
         {
             _authenticationService = authenticationService;
             _authorizationService = authorizationService;
+            _requestManager = requestManager;
         }
         public IActionResult Index()
         {
@@ -60,7 +66,7 @@ namespace Afrimart.Controllers
         {
             var model = new SetupSellerProfileViewModel()
             {
-
+                EmailAddress = _authorizationService.GetUserEmail()
             };
             return View(model);
         }
@@ -69,10 +75,16 @@ namespace Afrimart.Controllers
         public async Task<IActionResult> Onboarding(SetupSellerProfileViewModel model)
         {
             if (ModelState.IsValid)
-            {
-                // create a store,
-                // add seller role to user
-                // link user to store
+            { 
+                var result = await _requestManager.Send<SetupSellerProfileViewModel, BaseApiResponseDto<string>>("/api/Sellers/store", model,
+                    HttpMethod.Post);
+
+                if (result.Success)
+                {
+                    return RedirectToAction("Index", "Home");
+                }
+
+                ModelState.AddModelError("", "Request failed!");
             }
             return View(model);
         }

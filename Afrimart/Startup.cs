@@ -7,7 +7,9 @@ using Microsoft.Extensions.Hosting;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
+using Afrimart.Common;
 using Afrimart.Services;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Http;
@@ -31,7 +33,7 @@ namespace Afrimart
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddScoped<IAuthenticationService, AuthenticationService>();
-            services.AddScoped<IAuthorizationService, AuthorizationService>();
+            services.AddScoped<IAfrimartAuthorizationService, AfrimartAuthorizationService>();
 
             services.WebAuthSetup();
             services.HttpClientSetup("https://localhost:44314/api");
@@ -50,12 +52,23 @@ namespace Afrimart
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+
+            //app.UseStatusCodePages(async context => {
+            //    var response = context.HttpContext.Response;
+
+            //    if (response.StatusCode == (int)HttpStatusCode.Unauthorized ||
+            //        response.StatusCode == (int)HttpStatusCode.Forbidden)
+            //        response.Redirect("/Error/Unauthorized");
+            //});
+
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
             app.UseRouting();
 
             app.UseAuth();
+
+        
 
             app.UseEndpoints(endpoints =>
             {

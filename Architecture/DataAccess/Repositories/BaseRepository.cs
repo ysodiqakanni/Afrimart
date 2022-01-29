@@ -43,6 +43,11 @@ namespace DataAccess.Repositories
 
             return entity;
         }
+        public void Update(TEntity entity)
+        {
+            (entity as Entity).LastModified = DateTime.UtcNow; 
+            _dbContext.Entry(entity).State = EntityState.Modified;
+        }
 
         public TEntity Get(object id)
         {

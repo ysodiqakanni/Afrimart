@@ -21,6 +21,7 @@ namespace ServiceHelper
                 {
                     options.Cookie.Name = CookieAuthenticationDefaults.CookiePrefix + CookieAuthenticationDefaults.AuthenticationScheme;
                     options.Cookie.HttpOnly = true;
+                    //options.ExpireTimeSpan = TimeSpan.FromMinutes(10);
                     options.LoginPath = CookieAuthenticationDefaults.LoginPath;
                     options.AccessDeniedPath = CookieAuthenticationDefaults.AccessDeniedPath;
                 }
@@ -83,7 +84,9 @@ namespace ServiceHelper
                     scope.BaseAddress = new Uri(apiBaseUrl,
                         UriKind.Absolute);
                     scope.Timeout = new TimeSpan(0, 1, 0);
-                });
+                })
+                .ConfigurePrimaryHttpMessageHandler(sp =>
+                    new RequestMessageHandler(sp.GetService<IHttpContextAccessor>()));
         }
     }
 }

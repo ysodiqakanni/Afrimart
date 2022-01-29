@@ -21,6 +21,8 @@ namespace Afrimart.DataAccess.DataModels
         public bool ConfirmEmail { get; set; } 
         public string PhoneNumber { get; set; }  
         public string LastName { get; set; } 
-        public string FirstName { get; set; } 
+        public string FirstName { get; set; }
+
+        public virtual ICollection<UserRole> UserRoles { get; } = new List<UserRole>();
     }
 }

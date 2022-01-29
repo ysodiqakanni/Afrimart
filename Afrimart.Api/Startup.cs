@@ -11,11 +11,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Afrimart.Common;
 using Afrimart.DataAccess;
 using Afrimart.DataAccess.Repositories;
 using Afrimart.Service.Contracts;
 using Afrimart.Service.Implementations;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 
@@ -41,6 +43,9 @@ namespace Afrimart.Api
             
             services.AddScoped<IProductCategoryService, ProductCategoryService>();
             services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IStoreService, StoreService>();
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddScoped<IAfrimartAuthorizationService, AfrimartAuthorizationService>();
 
             // auth
             services.AddAuthentication(x =>

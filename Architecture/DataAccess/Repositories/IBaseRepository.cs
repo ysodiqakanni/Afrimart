@@ -15,6 +15,7 @@ namespace DataAccess.Repositories
 
         T Get(object id);
         Task<T> AddAsync(T entity);
+        void Update(T entity);
         IQueryable<T> Find(Expression<Func<T, bool>> predicate);
     }
 }

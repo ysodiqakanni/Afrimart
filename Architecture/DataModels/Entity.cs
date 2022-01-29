@@ -7,8 +7,8 @@ namespace DataModels
     {
         [Key]
         public int Id { get; set; }  
-        public DateTime DateCreated { get; set; }  
-        public DateTime LastModified { get; set; }
+        public DateTime DateCreated { get; set; } = DateTime.UtcNow; 
+        public DateTime LastModified { get; set; } = DateTime.UtcNow;
         public bool IsDeleted { get; set; }
     }
 }

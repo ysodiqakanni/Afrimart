@@ -6,6 +6,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Afrimart.DataAccess\Afrimart.DataAccess.csproj" />
+    <ProjectReference Include="..\Afrimart.Dto\Afrimart.Dto.csproj" />
   </ItemGroup>
 
 </Project>

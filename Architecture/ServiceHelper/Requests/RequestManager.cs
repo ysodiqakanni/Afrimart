@@ -72,7 +72,8 @@ namespace ServiceHelper.Requests
                 ex.Data.Add("Content", response.Content);
                 ex.Data.Add("API Route", $"GET {request.RequestUri}");
                 ex.Data.Add("API Status", (int)response.StatusCode);
-                 
+
+                //return default;
                 throw ex;
             }
             var result = deserialize(responseContent);

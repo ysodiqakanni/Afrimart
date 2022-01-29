@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using Afrimart.Common;
 using Afrimart.Dto;
 using Afrimart.Services;
 using Afrimart.ViewModels.Account;
@@ -15,9 +16,9 @@ namespace Afrimart.Controllers
     public class AccountController : Controller
     {
         private readonly IAuthenticationService _authenticationService;
-        private readonly Services.IAuthorizationService _authorizationService;
+        private readonly IAfrimartAuthorizationService _authorizationService;
 
-        public AccountController(IAuthenticationService authenticationService, Services.IAuthorizationService authorizationService)
+        public AccountController(IAuthenticationService authenticationService, IAfrimartAuthorizationService authorizationService)
         {
             _authenticationService = authenticationService;
             _authorizationService = authorizationService;
@@ -44,7 +45,8 @@ namespace Afrimart.Controllers
                 {
                     var claims = new List<Claim>()
                     {
-                        new Claim(ClaimTypes.Name, result.User.Email)
+                        new Claim(ClaimTypes.Name, result.User.Email),
+                        new Claim("Token", result.Token)
                     };
                     if (!string.IsNullOrEmpty(result.User.Role))
                     {

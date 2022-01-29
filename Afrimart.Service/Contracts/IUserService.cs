@@ -11,5 +11,6 @@ namespace Afrimart.Service.Contracts
         Task<User> GetUserByEmailAndPassword(string email, string password);
         bool UserExists(string email);
         Task<User> CreateUser(User user, string password);
+        Task<User> GetUserByEmail(string email);
     }
 }

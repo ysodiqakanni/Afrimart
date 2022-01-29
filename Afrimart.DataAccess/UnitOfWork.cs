@@ -10,6 +10,8 @@ namespace Afrimart.DataAccess
     {
         IProductCategoryRepo ProductCategoryRepo { get; set; }
         IUserRepo UserRepo { get; set; }
+        IStoreRepo StoreRepo { get; set; }
+        IRoleRepo RoleRepo { get; set; }
         Task SaveChangesAsync();
     }
     public class UnitOfWork : IUnitOfWork, IDisposable
@@ -17,12 +19,17 @@ namespace Afrimart.DataAccess
         private readonly AfrimartDbContext _context;
         public IProductCategoryRepo ProductCategoryRepo { get; set; }
         public IUserRepo UserRepo { get; set; }
+        public IStoreRepo StoreRepo { get; set; }
+        public IRoleRepo RoleRepo { get; set; }
+
 
         public UnitOfWork(AfrimartDbContext context)
         {
             _context = context;
             ProductCategoryRepo = new ProductCategoryRepo(_context);
             UserRepo = new UserRepo(_context);
+            StoreRepo = new StoreRepo(_context);
+            RoleRepo = new RoleRepo(_context);
         }
 
         public async Task SaveChangesAsync()

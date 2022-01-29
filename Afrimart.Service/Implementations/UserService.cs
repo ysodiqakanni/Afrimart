@@ -28,6 +28,12 @@ namespace Afrimart.Service.Implementations
 
             return !VerifyPasswordHash(password, user.PasswordHash, user.PasswordSalt) ? null : user;
         }
+        public async Task<User> GetUserByEmail(string email)
+        {
+            var user = _uow.UserRepo.Find(x => x.Email.ToLower().Equals(email.ToLower())).SingleOrDefault();
+            
+            return user;
+        }
 
         public bool UserExists(string email)
         {
@@ -47,6 +53,7 @@ namespace Afrimart.Service.Implementations
 
             return newUser;
         }
+
         private void CreatePasswordHash(string password, out byte[] passwordHash, out byte[] passwordSalt)
         {
             using var hmac = new System.Security.Cryptography.HMACSHA512();
