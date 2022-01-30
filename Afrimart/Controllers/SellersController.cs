@@ -86,6 +86,7 @@ namespace Afrimart.Controllers
 
                 ModelState.AddModelError("", "Request failed!");
             }
+            ModelState.AddModelError("", "An error occurred");
             return View(model);
         }
     }
