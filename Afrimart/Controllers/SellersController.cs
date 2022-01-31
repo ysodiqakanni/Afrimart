@@ -89,5 +89,29 @@ namespace Afrimart.Controllers
             ModelState.AddModelError("", "An error occurred");
             return View(model);
         }
+
+        public IActionResult Products()
+        {
+            return View();
+        }
+        public IActionResult AddProduct()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult AddProduct(string test)
+        {
+            return View();
+        }
+        public IActionResult Sales()
+        {
+            return View();
+        }
+        public IActionResult Payouts()
+        {
+            return View();
+        }
+
     }
 }
