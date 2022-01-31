@@ -35,6 +35,12 @@ namespace Afrimart
             services.AddScoped<IAuthenticationService, AuthenticationService>();
             services.AddScoped<IAfrimartAuthorizationService, AfrimartAuthorizationService>();
 
+            services.ConfigureApplicationCookie(o =>
+            {
+                o.ExpireTimeSpan = TimeSpan.FromSeconds(15);
+                o.SlidingExpiration = true;
+            });
+
             services.WebAuthSetup();
             services.HttpClientSetup("https://localhost:44314/api");
         }

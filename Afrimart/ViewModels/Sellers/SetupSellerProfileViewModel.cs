@@ -41,6 +41,7 @@ namespace Afrimart.ViewModels.Sellers
         public string Zip { get; set; }
         public string EIN { get; set; }
 
-      
+
+        public DashboardHeaderViewModel DashboardHeaderViewModel { get; set; } = new DashboardHeaderViewModel();
     }
 }

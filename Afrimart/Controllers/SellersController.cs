@@ -96,13 +96,18 @@ namespace Afrimart.Controllers
         }
         public IActionResult AddProduct()
         {
-            return View();
+            var model = new AddProductViewModel();
+            return View(model);
         }
 
         [HttpPost]
-        public IActionResult AddProduct(string test)
+        public IActionResult AddProduct(AddProductViewModel model)
         {
-            return View();
+            if (ModelState.IsValid)
+            {
+
+            }
+            return View(model);
         }
         public IActionResult Sales()
         {
