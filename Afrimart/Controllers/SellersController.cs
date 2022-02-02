@@ -105,9 +105,9 @@ namespace Afrimart.Controllers
         {
             if (ModelState.IsValid)
             {
-                ModelState.AddModelError("", "Success");
-                return View(model);
+                return RedirectToAction("Products");
             }
+
             ModelState.AddModelError("", "Unable to save product");
             return View(model);
         }

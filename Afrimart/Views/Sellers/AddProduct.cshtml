@@ -58,19 +58,19 @@
                         <div class="mb-3 pb-2">
                             <label class="form-label" for="unp-product-files">Upload more product images</label>
                             <input class="form-control" type="file" asp-for="GalleryImages" multiple="multiple">
-                            <div class="form-text">Maximum file size is 1GB</div>
+                            <div class="form-text">Maximum file size is 3MB</div>
                         </div>
                         <div class="row">
                             <label class="form-label" for="unp-standard-price">Pricing type</label>
                             <div class="col-sm-6 mb-3">
                                 <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="checkbox" id="ex-check-4">
+                                    <input class="form-check-input" type="checkbox" asp-for="IsWeighted" onchange="onWeightedCheck(this)">
                                     <label class="form-check-label" for="ex-check-4">Check if product is weighted</label>
                                 </div>
                             </div>
-                            <div class="col-sm-6 mb-3">
+                            <div id="divUnit" style="display:none" class="col-sm-6 mb-3">
                                 <label class="form-label" for="unp-extended-price">Unit of measurement</label>
-                                <input class="form-control" type="text">
+                                <input class="form-control" type="text" asp-for="WeightUnit">
                                 <div class="form-text">Common units are lbs, gms, oz, fl etc.</div>
                             </div>
                         </div>
@@ -79,22 +79,22 @@
                                 <label class="form-label" for="unp-standard-price">Price per unit</label>
                                 <div class="input-group">
                                     <span class="input-group-text"><i class="ci-dollar"></i></span>
-                                    <input class="form-control" type="text" id="unp-standard-price">
+                                    <input class="form-control" type="text" asp-for="UnitPrice" onchange="onUnitPriceChange()">
                                 </div> 
                             </div>
                             <div class="col-sm-6 mb-1">
                                 <label class="form-check-label" for="ex-check-4">Sales option</label>
 
                                 <div class="form-check form-check-inline input-group">
-                                    <input class="form-check-input" type="checkbox" id="ex-check-4">
+                                    <input class="form-check-input" type="checkbox" asp-for="IsOnSale" onchange="onSalesCheck(this)">
                                     <label class="form-check-label" for="ex-check-4">On Sale?</label> 
                                 </div>
                             </div>
-                            <div class="col-sm-6 mb-2">
+                            <div id="divSalesOption" style="display:none" class="col-sm-6 mb-2">
                                 <label class="form-label" for="unp-extended-price">Sales price</label>
                                 <div class="input-group">
                                     <span class="input-group-text"><i class="ci-dollar"></i></span>
-                                    <input class="form-control" type="text" id="unp-extended-price">
+                                    <input class="form-control" type="text" asp-for="SalePrice" onchange="onUnitPriceChange()">
                                 </div> 
                             </div>
                         </div>
@@ -103,24 +103,24 @@
                                 <label class="form-label" for="unp-standard-price">Tax</label>
                                 <div class="input-group">
                                     <span class="input-group-text"><i class="ci-dollar"></i></span>
-                                    <input class="form-control" type="text" id="unp-standard-price">
+                                    <input class="form-control" type="text" asp-for="Tax" onchange="onUnitPriceChange()">
                                 </div> 
                             </div>
                             <div class="col-sm-6 mb-3">
                                 <label class="form-label" for="unp-standard-price">Quantity Available</label>
                                 <div class="input-group"> 
-                                    <input class="form-control" type="text" id="unp-standard-price">
+                                    <input class="form-control" type="text" asp-for="QuantityAvailable">
                                 </div> 
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-sm-6 mb-3">
                                 <label class="form-label" for="unp-standard-price">Platform Fee:</label> <br/>
-                                <label class="form-label" style="font-size: 2rem" for="unp-standard-price">$0.45 (4%)</label>
+                                <label class="form-label" style="font-size: 2rem" id="PlatformFee" asp-for="PlatformFee">4%</label>
                             </div>
                             <div class="col-sm-6 mb-3">
                                 <label class="form-label" for="unp-standard-price">Display Value</label> <br/>
-                                <label class="form-label" style="font-size: 2rem" for="unp-standard-price">$32.99</label>
+                                <label class="form-label" style="font-size: 2rem" id="DisplayPrice" asp-for="DisplayPrice">$0.00</label>
                             </div>
                         </div>
                      
@@ -135,3 +135,64 @@
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
+
+<script type="text/javascript">
+    function onWeightedCheck(el) { 
+        if ($(el).is(":checked")) {
+            $("#divUnit").show();
+        } else {
+            $("#divUnit").hide();
+        } 
+    }
+    function onSalesCheck(el) { 
+        if ($(el).is(":checked")) {
+            $("#divSalesOption").show();
+            
+        } else {
+            $("#divSalesOption").hide(); 
+        }
+        onUnitPriceChange();
+    }
+
+
+    function calculatePrice(up, onSale, sp, tx) {
+        if (sp === 0) sp = up;
+
+        let price = onSale === true ? sp + tx : up + tx;
+        const platformFee = price * 0.04; // 4%
+        price += platformFee;
+
+        return {
+            displayPrice: price,
+            fee: platformFee
+        };
+    }
+    function onUnitPriceChange() {
+        const unitPriceVal = Number($("#UnitPrice").val());
+        const discountAvailable = $("#IsOnSale").is(":checked");
+        const salesPriceVal = Number($("#SalePrice").val());
+        const tax = Number($("#Tax").val());
+
+        // verify prices
+        if (isNaN(unitPriceVal) || isNaN(salesPriceVal) || isNaN(tax)) {
+            alert("Digits only allowed!");
+            return;
+        }
+        if (unitPriceVal < 0 || salesPriceVal < 0 || tax < 0) {
+            alert("Values must be positive!");
+            return;
+        }
+        if (discountAvailable && (unitPriceVal < salesPriceVal)) {
+            alert("Sales price must be less than regular unit price");
+
+            return;
+        }
+
+        if (unitPriceVal === 0) return;
+        const priceObj = calculatePrice(unitPriceVal, discountAvailable, salesPriceVal, tax);
+
+        $("#DisplayPrice").text("$" + priceObj.displayPrice.toFixed(2));
+
+        $("#PlatformFee").text("$" + priceObj.fee.toFixed(2) + " (4%)");
+    }
+</script>
