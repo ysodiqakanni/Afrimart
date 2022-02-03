@@ -20,7 +20,7 @@ namespace Afrimart.Service.Implementations
 
         public async Task<User> GetUserByEmailAndPassword(string email, string password)
         { 
-            var user = _uow.UserRepo.Find(x => x.Email.ToLower().Equals(email.ToLower())).SingleOrDefault();
+            var user = await _uow.UserRepo.GetSingleUserWithRolesByEmail(email); //.Find(x => x.Email.ToLower().Equals(email.ToLower())).SingleOrDefault();
             if(user == null)
             {
                 return null;

@@ -7,6 +7,8 @@
   <ItemGroup>
     <Compile Remove="Migrations\20220129182226_createStoreAndRoleTables.cs" />
     <Compile Remove="Migrations\20220129182226_createStoreAndRoleTables.Designer.cs" />
+    <Compile Remove="Migrations\20220203173615_AddProductTable.cs" />
+    <Compile Remove="Migrations\20220203173615_AddProductTable.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

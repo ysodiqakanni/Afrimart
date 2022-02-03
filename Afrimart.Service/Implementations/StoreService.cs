@@ -52,5 +52,33 @@ namespace Afrimart.Service.Implementations
 
             await _uow.SaveChangesAsync();
         }
+
+        public async Task<Tuple<bool, string>> AddNewProduct(Product product, string userEmail)
+        {
+            var store = _uow.StoreRepo.Find(x => x.User.Email.ToLower().Equals(userEmail)).SingleOrDefault();
+            if (store == null)
+            {
+                // Todo: send a log to support
+                return new Tuple<bool, string>(false, "Unable to retrieve store data");
+            }
+
+            product.PSIN = GenerateNew10DigitProductCode();
+            product.Store = store;
+            var savedProduct = await _uow.ProductRepo.AddAsync(product);
+            await _uow.SaveChangesAsync();
+
+            // Todo: check that savedProduct brings an ID
+            return new Tuple<bool, string>(true, savedProduct.Id.ToString());
+        }
+
+        // TOdo: move to ProductService or something -> A common function perhaps
+        public string GenerateNew10DigitProductCode()
+        {
+            int length = 10;
+            Random random = new Random();
+            const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+            return new string(Enumerable.Repeat(chars, length)
+                .Select(s => s[random.Next(s.Length)]).ToArray());
+        }
     }
 }

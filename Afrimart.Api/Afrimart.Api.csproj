@@ -18,6 +18,7 @@
     <ProjectReference Include="..\Afrimart.Common\Afrimart.Common.csproj" />
     <ProjectReference Include="..\Afrimart.Dto\Afrimart.Dto.csproj" />
     <ProjectReference Include="..\Afrimart.Service\Afrimart.Service.csproj" />
+    <ProjectReference Include="..\Architecture\ServiceHelper\ServiceHelper.csproj" />
   </ItemGroup>
 
 

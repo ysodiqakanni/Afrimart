@@ -1,14 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Text;
 
-namespace Afrimart.ViewModels.Sellers
+namespace Afrimart.Dto.Stores
 {
-    public class AddProductViewModel
+    public class AddProductRequestDto
     {
         [Required]
         [RegularExpression("^[-A-Za-z0-9 ,_'=.%]+$", ErrorMessage = "Only alphabets and a few specials allowed")]
@@ -38,21 +35,6 @@ namespace Afrimart.ViewModels.Sellers
         public string Tags { get; set; }
 
         public int QuantityAvailable { get; set; }
-        public decimal PlatformFee { get; set; } 
-
-        public string UPC { get; set; }  // Do all products have this? or we should make it optional
-
-        [Required(ErrorMessage = "You must upload an image")] 
-        [DataType(DataType.Upload)]
-        [MaxFileSize(4 * 1024 * 1024)]
-        [AllowedExtensions(new string[] { ".jpg", ".jpeg", ".png" })] 
-        public IFormFile DisplayImage { get; set; }
-
-        [MaxFileSize(3 * 1024 * 1024)]
-        [AllowedExtensions(new string[] { ".jpg", ".jpeg" ,".png" })]
-        public List<IFormFile> GalleryImages { get; set; }
-
-        public DashboardHeaderViewModel DashboardHeaderViewModel { get; set; } = new DashboardHeaderViewModel();
-        public List<SelectListItem> ProductCategories { get; set; }
+        public decimal PlatformFee { get; set; }
     }
 }

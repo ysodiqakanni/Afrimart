@@ -13,23 +13,22 @@
             <partial name="_Sidebar" />
             <!-- Content-->
             <section class="col-lg-8 pt-lg-4 pb-4 mb-3">
-                <div class="pt-2 px-4 ps-lg-0 pe-xl-5">
-                    <!-- Title-->
-                    <div class="d-sm-flex flex-wrap justify-content-between align-items-center pb-2">
-                        <h2 class="h3 py-2 me-2 text-center text-sm-start">Add New Product</h2>
-                        <div class="py-2">
-                            <select class="form-select me-2" id="unp-category">
-                                <option>Select category</option>
-                                <option>Photos</option>
-                                <option>Graphics</option>
-                                <option>UI Design</option>
-                                <option>Web Themes</option>
-                                <option>Fonts</option>
-                                <option>Add-Ons</option>
-                            </select>
+                <form asp-action="AddProduct" enctype="multipart/form-data">
+                    <div class="pt-2 px-4 ps-lg-0 pe-xl-5">
+
+
+                        <!-- Title-->
+                        <div class="d-sm-flex flex-wrap justify-content-between align-items-center pb-2">
+                            <h2 class="h3 py-2 me-2 text-center text-sm-start">Add New Product</h2>
+                            <div class="py-2">
+
+                                <select class="form-select me-2" asp-for="SelectedCategory" asp-items="@Model.ProductCategories">
+                                    <option value="">Select</option>
+                                </select>
+                                <span asp-validation-for="SelectedCategory" class="text-danger"></span>
+                            </div>
                         </div>
-                    </div>
-                    <form asp-action="AddProduct" enctype="multipart/form-data">
+
                         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                         <div class="mb-3 pb-2">
                             <label class="form-label">Product name</label>
@@ -39,7 +38,7 @@
                         </div>
                         <div class="file-drop-area mb-3">
                             <div class="file-drop-icon ci-cloud-upload"></div><span class="file-drop-message">Drag and drop here to upload product screenshot</span>
-                            <input class="file-drop-input" asp-for="DisplayImage" type="file">
+                            <input class="file-drop-input" asp-for="DisplayImage" type="file" accept="image/png, image/gif, image/jpeg">
                             <button class="file-drop-btn btn btn-primary btn-sm mb-2" type="button">Or select file</button>
                             <span asp-validation-for="DisplayImage" class="text-danger"></span>
                             <div class="form-text">1000 x 800px ideal size for hi-res displays</div>
@@ -57,7 +56,7 @@
                         </div>
                         <div class="mb-3 pb-2">
                             <label class="form-label" for="unp-product-files">Upload more product images</label>
-                            <input class="form-control" type="file" asp-for="GalleryImages" multiple="multiple">
+                            <input class="form-control" type="file" asp-for="GalleryImages" multiple="multiple" accept="image/png, image/gif, image/jpeg">
                             <div class="form-text">Maximum file size is 3MB</div>
                         </div>
                         <div class="row">
@@ -80,14 +79,14 @@
                                 <div class="input-group">
                                     <span class="input-group-text"><i class="ci-dollar"></i></span>
                                     <input class="form-control" type="text" asp-for="UnitPrice" onchange="onUnitPriceChange()">
-                                </div> 
+                                </div>
                             </div>
                             <div class="col-sm-6 mb-1">
                                 <label class="form-check-label" for="ex-check-4">Sales option</label>
 
                                 <div class="form-check form-check-inline input-group">
                                     <input class="form-check-input" type="checkbox" asp-for="IsOnSale" onchange="onSalesCheck(this)">
-                                    <label class="form-check-label" for="ex-check-4">On Sale?</label> 
+                                    <label class="form-check-label" for="ex-check-4">On Sale?</label>
                                 </div>
                             </div>
                             <div id="divSalesOption" style="display:none" class="col-sm-6 mb-2">
@@ -95,7 +94,7 @@
                                 <div class="input-group">
                                     <span class="input-group-text"><i class="ci-dollar"></i></span>
                                     <input class="form-control" type="text" asp-for="SalePrice" onchange="onUnitPriceChange()">
-                                </div> 
+                                </div>
                             </div>
                         </div>
                         <div class="row">
@@ -104,29 +103,30 @@
                                 <div class="input-group">
                                     <span class="input-group-text"><i class="ci-dollar"></i></span>
                                     <input class="form-control" type="text" asp-for="Tax" onchange="onUnitPriceChange()">
-                                </div> 
+                                </div>
                             </div>
                             <div class="col-sm-6 mb-3">
                                 <label class="form-label" for="unp-standard-price">Quantity Available</label>
-                                <div class="input-group"> 
+                                <div class="input-group">
                                     <input class="form-control" type="text" asp-for="QuantityAvailable">
-                                </div> 
+                                </div>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-sm-6 mb-3">
-                                <label class="form-label" for="unp-standard-price">Platform Fee:</label> <br/>
+                                <label class="form-label" for="unp-standard-price">Platform Fee:</label> <br />
                                 <label class="form-label" style="font-size: 2rem" id="PlatformFee" asp-for="PlatformFee">4%</label>
                             </div>
                             <div class="col-sm-6 mb-3">
-                                <label class="form-label" for="unp-standard-price">Display Value</label> <br/>
+                                <label class="form-label" for="unp-standard-price">Display Value</label> <br />
                                 <label class="form-label" style="font-size: 2rem" id="DisplayPrice" asp-for="DisplayPrice">$0.00</label>
                             </div>
                         </div>
-                     
+
                         <button class="btn btn-primary d-block w-100" type="submit"><i class="ci-cloud-upload fs-lg me-2"></i>Upload Product</button>
-                    </form>
-                </div>
+                    </div>
+                </form>
+
             </section>
         </div>
     </div>

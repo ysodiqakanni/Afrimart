@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using Afrimart.DataAccess.DataModels;
 using Microsoft.EntityFrameworkCore;
 
@@ -13,13 +14,15 @@ namespace Afrimart.DataAccess
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
+            
             base.OnModelCreating(builder);
         }
 
         public DbSet<ProductCategory> ProductCategories { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<Role> Roles { get; set; }
-        // public DbSet<Product> Products { get; set; }
+        public DbSet<Product> Products { get; set; }
+        public DbSet<ProductFile> ProductFiles { get; set; }
         public DbSet<Store> Stores { get; set; }
     }
 }

@@ -38,10 +38,10 @@ namespace DataAccess.Repositories
             entity.DateCreated = DateTime.UtcNow;
             entity.LastModified = DateTime.UtcNow;
             entity.IsDeleted = false;
+             
+            var savedObj =_dbset.Add(entity); 
 
-            _dbset.Add(entity); 
-
-            return entity;
+            return savedObj.Entity;
         }
         public void Update(TEntity entity)
         {

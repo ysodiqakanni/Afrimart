@@ -13,6 +13,7 @@ using Afrimart.Dto.Authentication;
 using Afrimart.Dto.Users;
 using Afrimart.Service.Contracts;
 using Microsoft.IdentityModel.Tokens;
+using ServiceHelper.Token;
 
 namespace Afrimart.Api.Controllers
 {
@@ -21,10 +22,12 @@ namespace Afrimart.Api.Controllers
     public class AuthenticationController : ControllerBase
     {
         private readonly IUserService _userService;
+        private readonly ITokenService _tokenService;
 
-        public AuthenticationController(IUserService userService)
+        public AuthenticationController(IUserService userService, ITokenService tokenService)
         {
             _userService = userService;
+            _tokenService = tokenService;
         }
 
         [HttpPost("login")]
@@ -38,8 +41,15 @@ namespace Afrimart.Api.Controllers
                     Success = false
                 });
             }
-
-            var token = GenerateToken(user.Email); 
+            var claims = new List<Claim>()
+            {
+                new Claim(ClaimTypes.Name, user.Email)
+            };
+            if (user.UserRoles.Any())
+            {
+                claims.Add(new Claim(ClaimTypes.Role, user.UserRoles.First().Role.Name));
+            }
+            var token = _tokenService.GenerateToken(claims, Secret); 
             return Ok(new LoginResponseDto()
             {
                 Success = true,
@@ -70,8 +80,12 @@ namespace Afrimart.Api.Controllers
                 Email = request.Email
             };
             await _userService.CreateUser(user, request.Password);
+            var claims = new List<Claim>()
+            {
+                new Claim(ClaimTypes.Name, user.Email)
+            };
 
-            var token = GenerateToken(user.Email); 
+            var token = _tokenService.GenerateToken(claims, Secret); 
             return Ok(new BaseApiResponseDto<LoginResponseDto>()
             {
                 Success = true,
@@ -88,7 +102,7 @@ namespace Afrimart.Api.Controllers
 
         private const string Secret = "This is a temporary secreeet that mussst beebee replced rewritten";
 
-        private string GenerateToken(string username, int expireMinutes = 50)
+        private string GenerateToken1(string username, int expireMinutes = 50)
         {
             var symmetricKey = Convert.FromBase64String(Secret);
             var tokenHandler = new JwtSecurityTokenHandler();

@@ -3,7 +3,7 @@
 <div class="page-title-overlap bg-accent pt-4">
     <div class="container d-flex flex-wrap flex-sm-nowrap justify-content-center justify-content-sm-between align-items-center pt-2">
         <div class="d-flex align-items-center pb-3">
-            <div class="img-thumbnail rounded-circle position-relative flex-shrink-0" style="width: 6.375rem;"><img class="rounded-circle" src="/assets/img/avatar.png" alt="Createx Studio"></div>
+            <div class="img-thumbnail rounded-circle position-relative flex-shrink-0" style="width: 6.375rem;"><img class="rounded-circle" src="@Model.LogoUri" alt="Store Logo"></div>
             <div class="ps-3">
                 <h3 class="text-light fs-lg mb-0">Createx Studio</h3><span class="d-block text-light fs-ms opacity-60 py-1">Member since @Model.MemberSince</span>
             </div>
@@ -15,10 +15,23 @@
             </div>
             <div class="text-sm-end">
                 <div class="text-light fs-base">Seller rating</div>
-                <div class="star-rating">
-                    <i class="star-rating-icon ci-star-filled active"></i><i class="star-rating-icon ci-star-filled active"></i><i class="star-rating-icon ci-star-filled active"></i><i class="star-rating-icon ci-star-filled active"></i><i class="star-rating-icon ci-star"></i>
-                </div>
-                <div class="text-light opacity-60 fs-xs">Based on @Model.RatingCount reviews</div>
+                @if (Model.RatingCount > 0)
+                {
+                    <div class="star-rating">
+                        @for(int i=0; i<Model.AverageRating; i++)
+                    {
+                        <i class="star-rating-icon ci-star-filled active"></i> 
+                    }
+                    
+                        @*<i class="star-rating-icon ci-star"></i>*@
+                    </div>
+                    <div class="text-light opacity-60 fs-xs">Based on @Model.RatingCount reviews</div>
+                }
+                else
+                {
+                    <div class="text-light opacity-60 fs-xs">No reviews yet</div>
+                }
+               
             </div>
         </div>
     </div>

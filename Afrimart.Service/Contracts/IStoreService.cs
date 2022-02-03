@@ -10,5 +10,6 @@ namespace Afrimart.Service.Contracts
     public interface IStoreService
     {
         Task CreateStore(CreateStoreRequestDto request, User user);
+        Task<Tuple<bool, string>> AddNewProduct(Product product, string userEmail);
     }
 }
