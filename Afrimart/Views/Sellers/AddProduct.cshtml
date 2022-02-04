@@ -120,7 +120,7 @@
                             <div class="col-sm-6 mb-3">
                                 <label class="form-label" for="unp-standard-price">Display Value</label> <br />
                                 <input type="hidden" asp-for="DisplayPrice"/>
-                                <label class="form-label" style="font-size: 2rem" id="DisplayPrice" asp-for="DisplayPrice">$0.00</label>
+                                <label class="form-label" style="font-size: 2rem" id="lblDisplayPrice">$0.00</label>
                             </div>
                         </div>
 
@@ -173,7 +173,7 @@
         const discountAvailable = $("#IsOnSale").is(":checked");
         const salesPriceVal = Number($("#SalePrice").val());
         const tax = Number($("#Tax").val());
-
+        
         // verify prices
         if (isNaN(unitPriceVal) || isNaN(salesPriceVal) || isNaN(tax)) {
             alert("Digits only allowed!");
@@ -190,9 +190,10 @@
         }
 
         if (unitPriceVal === 0) return;
-        const priceObj = calculatePrice(unitPriceVal, discountAvailable, salesPriceVal, tax);
+        const priceObj = calculatePrice(unitPriceVal, discountAvailable, salesPriceVal, tax);
 
-        $("#DisplayPrice").text("$" + priceObj.displayPrice.toFixed(2));
+        $("#lblDisplayPrice").text("$" + priceObj.displayPrice.toFixed(2));
+        $("#DisplayPrice").val(priceObj.displayPrice);
 
         $("#PlatformFee").text("$" + priceObj.fee.toFixed(2) + " (4%)");
     }

@@ -139,23 +139,7 @@ namespace Afrimart.Controllers
         }
 
         public async Task<IActionResult> Products()
-        {
-            var modelOld = new SellerProductListViewModel()
-            {
-                DashboardHeaderViewModel = dashboardTestData,
-                Products = new List<SellerProductCardViewModel>()
-                {
-                    new SellerProductCardViewModel()
-                    {
-                        ImageUri = "https://picsum.photos/250/150",
-                        Name = "This is a test product",
-                        Price = 12.99m,
-                        TotalEarnings = 1204.95m,
-                        TotalSales = 98
-                    }
-                }
-            };
-
+        { 
             var apiResponse = await _requestManager.Send<string, BaseApiResponseDto<ProductListPageDataDto>>("/api/Sellers/prod-list-data", null,
                 HttpMethod.Get);
             var data = apiResponse.Data;
@@ -184,17 +168,30 @@ namespace Afrimart.Controllers
 
             return View(model);
         }
-        public IActionResult AddProduct()
-        {
-            // Todo: pull all categories
-            // Todo: pull dashboard data
-             
+        public async Task<IActionResult> AddProduct()
+        {  
+            var apiResponse = await _requestManager.Send<string, BaseApiResponseDto<AddProductPageDataDto>>("/api/Sellers/add-prod-data", null,
+                HttpMethod.Get);
+            var data = apiResponse.Data;
 
             var model = new AddProductViewModel()
             {
-                DashboardHeaderViewModel = dashboardTestData,
-                ProductCategories = testCategories
+                DashboardHeaderViewModel = new DashboardHeaderViewModel()
+                {
+                    StoreName = data.DashboardData.StoreName,
+                    TotalSales = data.DashboardData.TotalSales,
+                    RatingCount = data.DashboardData.RatingCount,
+                    MemberSince = data.DashboardData.MemberSince,
+                    AverageRating = data.DashboardData.AverageRating,
+                    LogoUri = data.DashboardData.LogoUri
+                },
+                ProductCategories = data.Categories.Select(x => new SelectListItem()
+                {
+                    Value = x.Value,
+                    Text = x.Text
+                }).ToList()
             };
+
             return View(model);
         }
 
@@ -240,8 +237,25 @@ namespace Afrimart.Controllers
                 ModelState.AddModelError("apiError", result.Message);
             }
 
-            model.DashboardHeaderViewModel = dashboardTestData; 
-            model.ProductCategories = testCategories;
+            // Load data again from API
+            var apiResponse = await _requestManager.Send<string, BaseApiResponseDto<AddProductPageDataDto>>("/api/Sellers/add-prod-data", null,
+                HttpMethod.Get);
+            var data = apiResponse.Data;
+            model.DashboardHeaderViewModel = new DashboardHeaderViewModel()
+            {
+                StoreName = data.DashboardData.StoreName,
+                TotalSales = data.DashboardData.TotalSales,
+                RatingCount = data.DashboardData.RatingCount,
+                MemberSince = data.DashboardData.MemberSince,
+                AverageRating = data.DashboardData.AverageRating,
+                LogoUri = data.DashboardData.LogoUri
+            };
+            model.ProductCategories = data.Categories.Select(x => new SelectListItem()
+            {
+                Value = x.Value,
+                Text = x.Text
+            }).ToList();
+             
 
             ModelState.AddModelError("", "Unable to save product");
             return View(model);

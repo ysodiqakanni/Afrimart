@@ -49,10 +49,7 @@ namespace Afrimart.Api.Controllers
         [Route("products")]
         [Authorize(Roles = "Seller")]
         public async Task<IActionResult> AddNewProduct([FromBody] AddProductRequestDto productRequest)
-        { 
-
-            // get loggedIn userEmail
-            // get store by the email
+        {  
             var userEmail = _authorizationService.GetUserEmail();
             var product = new Product()
             {
@@ -68,7 +65,8 @@ namespace Afrimart.Api.Controllers
                 ProductCategoryId = int.Parse(productRequest.SelectedCategory),
                 SellingPrice = productRequest.DisplayPrice,
                 Tags = productRequest.Tags,
-                QuantityAvailable = productRequest.QuantityAvailable, 
+                QuantityAvailable = productRequest.QuantityAvailable,
+                Tax = productRequest.Tax
             };
 
             var result = await _storeService.AddNewProduct(product, userEmail);
