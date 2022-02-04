@@ -11,6 +11,8 @@ namespace Afrimart.DataAccess.Repositories
     public interface IStoreRepo : IBaseRepository<Store, AfrimartDbContext>
     {
         Product GetProductByIdAndStoreOwnerEmail(int productId, string storeOwnerEmail);
+        Store GetStoreWithProductsByOwnerEmail(string storeOwnerEmail);
+        Store GetStoreByOwnerEmailNoInclude(string storeOwnerEmail);
     }
     public class StoreRepo : BaseRepository<Store, AfrimartDbContext>, IStoreRepo
     {
@@ -29,6 +31,19 @@ namespace Afrimart.DataAccess.Repositories
             var theProduct = store.Products.SingleOrDefault(p => p.Id == productId);
 
             return theProduct;
+        }
+        public Store GetStoreWithProductsByOwnerEmail(string storeOwnerEmail)
+        {
+            var store = _ctx.Stores.Include(s => s.Products) 
+                .SingleOrDefault(s => s.User.Email.ToLower().Equals(storeOwnerEmail.ToLower()));
+
+            return store;
+        }
+        public Store GetStoreByOwnerEmailNoInclude(string storeOwnerEmail)
+        {
+            var store = _ctx.Stores.SingleOrDefault(s => s.User.Email.ToLower().Equals(storeOwnerEmail.ToLower()));
+
+            return store;
         }
     }
 }

@@ -89,12 +89,13 @@ namespace Afrimart.Api.Controllers
 
         [Route("products/{productId}/files")]
         [HttpPost]
-        //[Authorize(Roles = "Seller")]
+        [Authorize(Roles = "Seller")]
         public async Task<IActionResult> UploadProductImages([FromBody] List<ProductFileUploadDto> uploadRequests, int productId)
         {
             // ensure no seller is updating another seller's product
             var userEmail = _authorizationService.GetUserEmail();
-            if (!_storeService.IsProductBelongToStore(productId, userEmail))
+            var theProduct = _storeService.GetStoreProductByIdAndEmail(productId, userEmail);
+            if (theProduct == null)
             {
                 return Forbid();
             }
@@ -111,8 +112,36 @@ namespace Afrimart.Api.Controllers
                 });
             }
 
-            await _storeService.AddProductFiles(prodFiles);
-            return Ok("Files saved successfully");
+            await _storeService.AddProductFiles(prodFiles, theProduct);
+            return Ok(new BaseApiResponseDto<string>()
+            {
+                Success = true,
+                Message = "Files saved successfully"
+            });
+        }
+
+        [HttpGet("prod-list-data")]
+        public async Task<IActionResult> GetProductListPageData()
+        {
+            var userEmail = _authorizationService.GetUserEmail();
+            var data = _storeService.GetProductListData(userEmail);
+            return Ok(new BaseApiResponseDto<ProductListPageDataDto>()
+            {
+                Success = true,
+                Data = data
+            });
+        }
+
+        [HttpGet("add-prod-data")]
+        public async Task<IActionResult> GetProductCreationPageData()
+        {
+            var userEmail = _authorizationService.GetUserEmail();
+            var data = _storeService.GetProductCreationPageData(userEmail);
+            return Ok(new BaseApiResponseDto<AddProductPageDataDto>()
+            {
+                Success = true,
+                Data = data
+            });
         }
     }
 }

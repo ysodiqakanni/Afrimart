@@ -138,9 +138,9 @@ namespace Afrimart.Controllers
             return View(model);
         }
 
-        public IActionResult Products()
+        public async Task<IActionResult> Products()
         {
-            var model = new SellerProductListViewModel()
+            var modelOld = new SellerProductListViewModel()
             {
                 DashboardHeaderViewModel = dashboardTestData,
                 Products = new List<SellerProductCardViewModel>()
@@ -155,6 +155,33 @@ namespace Afrimart.Controllers
                     }
                 }
             };
+
+            var apiResponse = await _requestManager.Send<string, BaseApiResponseDto<ProductListPageDataDto>>("/api/Sellers/prod-list-data", null,
+                HttpMethod.Get);
+            var data = apiResponse.Data;
+
+            var model = new SellerProductListViewModel()
+            {
+                DashboardHeaderViewModel = new DashboardHeaderViewModel()
+                {
+                    StoreName = data.DashboardData.StoreName,
+                    TotalSales = data.DashboardData.TotalSales,
+                    RatingCount = data.DashboardData.RatingCount,
+                    MemberSince = data.DashboardData.MemberSince,
+                    AverageRating = data.DashboardData.AverageRating,
+                    LogoUri = data.DashboardData.LogoUri
+                },
+                Products = data.Products.Select(x => new SellerProductCardViewModel()
+                {
+                    ImageUri = x.ImageUri,
+                    Name = x.Name,
+                    Price =  x.Price,
+                    TotalEarnings = x.TotalEarnings,
+                    TotalSales = x.TotalSales
+                }).ToList()
+            };
+
+
             return View(model);
         }
         public IActionResult AddProduct()
@@ -175,12 +202,7 @@ namespace Afrimart.Controllers
         public async Task<IActionResult> AddProduct(AddProductViewModel model)
         {
             if (ModelState.IsValid)
-            {
-                // first save the product to the db
-                // upload the images to file server
-                // save the displayUrl againt product entity
-                // create new ProfuctFiles in the db
-
+            { 
                 var result = await _requestManager.Send<AddProductViewModel, BaseApiResponseDto<string>>("/api/Sellers/products", model,
                     HttpMethod.Post);
                 if (result.Success)
@@ -205,11 +227,15 @@ namespace Afrimart.Controllers
                             FileUri = url
                         });
                     }
-                    // save images
-                    // save the display image
 
-                    // if there are gallery images, save them
-                    return RedirectToAction("Products");
+                    var uploadResult = await _requestManager.Send<List<ProductFileUploadDto>, BaseApiResponseDto<string>>($"/api/Sellers/products/{productId}/files", imagesToUpload,
+                        HttpMethod.Post);
+                    if (uploadResult.Success)
+                    {
+                        return RedirectToAction("Products");
+                    }
+                    
+                    ModelState.AddModelError("apiError", uploadResult.Message);
                 }
                 ModelState.AddModelError("apiError", result.Message);
             }
