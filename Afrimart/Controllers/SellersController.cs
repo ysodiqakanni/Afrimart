@@ -10,9 +10,11 @@ using Afrimart.Dto;
 using Afrimart.Services;
 using Afrimart.ViewModels.Sellers;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using ServiceHelper.Requests;
 using IAuthorizationService = Microsoft.AspNetCore.Authorization.IAuthorizationService;
+using Afrimart.Dto.Stores;
 
 namespace Afrimart.Controllers
 {
@@ -22,12 +24,57 @@ namespace Afrimart.Controllers
         private readonly IAuthenticationService _authenticationService;
         private readonly IAfrimartAuthorizationService _authorizationService;
         private readonly IRequestManager _requestManager;
+        private DashboardHeaderViewModel dashboardTestData;
+        private List<SelectListItem> testCategories;
 
         public SellersController(IAuthenticationService authenticationService, IAfrimartAuthorizationService authorizationService, IRequestManager requestManager)
         {
             _authenticationService = authenticationService;
             _authorizationService = authorizationService;
             _requestManager = requestManager;
+
+            dashboardTestData = new DashboardHeaderViewModel()
+            {
+                AverageRating = 4.6,
+                LogoUri = "https://source.unsplash.com/random",
+                MemberSince = "July 2018",
+                RatingCount = 235,
+                StoreName = "Molly Kitchen",
+                TotalSales = 600
+            };
+            testCategories = new List<SelectListItem>()
+            {
+                new SelectListItem()
+                {
+                    Value = "1",
+                    Text = "Seasonings"
+                },
+                new SelectListItem()
+                {
+                    Value = "2",
+                    Text = "Seasonings"
+                },
+                new SelectListItem()
+                {
+                    Value = "3",
+                    Text = "Fish"
+                },
+                new SelectListItem()
+                {
+                    Value = "4",
+                    Text = "Poultry"
+                },
+                new SelectListItem()
+                {
+                    Value = "5",
+                    Text = "Cookies"
+                },
+                new SelectListItem()
+                {
+                    Value = "6",
+                    Text = "Snacks"
+                },
+            };
         }
         public IActionResult Index()
         {
@@ -93,59 +140,33 @@ namespace Afrimart.Controllers
 
         public IActionResult Products()
         {
-            return View();
+            var model = new SellerProductListViewModel()
+            {
+                DashboardHeaderViewModel = dashboardTestData,
+                Products = new List<SellerProductCardViewModel>()
+                {
+                    new SellerProductCardViewModel()
+                    {
+                        ImageUri = "https://picsum.photos/250/150",
+                        Name = "This is a test product",
+                        Price = 12.99m,
+                        TotalEarnings = 1204.95m,
+                        TotalSales = 98
+                    }
+                }
+            };
+            return View(model);
         }
         public IActionResult AddProduct()
         {
             // Todo: pull all categories
             // Todo: pull dashboard data
-
-            var categories = new List<SelectListItem>()
-            {
-                new SelectListItem()
-                {
-                    Value = "1",
-                    Text = "Seasonings"
-                },
-                new SelectListItem()
-                {
-                    Value = "2",
-                    Text = "Seasonings"
-                },
-                new SelectListItem()
-                {
-                    Value = "3",
-                    Text = "Fish"
-                },
-                new SelectListItem()
-                {
-                    Value = "4",
-                    Text = "Poultry"
-                },
-                new SelectListItem()
-                {
-                    Value = "5",
-                    Text = "Cookies"
-                },
-                new SelectListItem()
-                {
-                    Value = "6",
-                    Text = "Snacks"
-                },
-            };
+             
 
             var model = new AddProductViewModel()
             {
-                DashboardHeaderViewModel = new DashboardHeaderViewModel()
-                {
-                    AverageRating = 4.6,
-                    LogoUri = "https://source.unsplash.com/random",
-                    MemberSince = "July 2018",
-                    RatingCount = 235,
-                    StoreName = "Molly Kitchen",
-                    TotalSales = 600
-                },
-                ProductCategories = categories
+                DashboardHeaderViewModel = dashboardTestData,
+                ProductCategories = testCategories
             };
             return View(model);
         }
@@ -164,55 +185,37 @@ namespace Afrimart.Controllers
                     HttpMethod.Post);
                 if (result.Success)
                 {
-                    int productId = int.Parse(result.Data);
+                    string productId = result.Data;
+                    var imagesToUpload = new List<ProductFileUploadDto>();
+                    string displayImgUrl = UploadFile(model.DisplayImage, $"/products/{productId}");
+                    imagesToUpload.Add(new ProductFileUploadDto()
+                    {
+                        FileType = FileType.DisplayImage,
+                        FileName = $"{Guid.NewGuid()}{model.DisplayImage.FileName.Substring(0, 8)}",
+                        FileUri = displayImgUrl
+                    });
+
+                    foreach (var file in model.GalleryImages)
+                    {
+                        string url = UploadFile(model.DisplayImage, $"/products/{productId}");
+                        imagesToUpload.Add(new ProductFileUploadDto()
+                        {
+                            FileType = FileType.GalleryImages,
+                            FileName = $"{Guid.NewGuid()}{file.FileName.Substring(0, 8)}",
+                            FileUri = url
+                        });
+                    }
+                    // save images
+                    // save the display image
+
+                    // if there are gallery images, save them
                     return RedirectToAction("Products");
                 }
                 ModelState.AddModelError("apiError", result.Message);
             }
 
-            model.DashboardHeaderViewModel = new DashboardHeaderViewModel()
-            {
-                AverageRating = 4.6,
-                LogoUri = "https://source.unsplash.com/random",
-                MemberSince = "July 2018",
-                RatingCount = 235,
-                StoreName = "Molly Kitchen",
-                TotalSales = 600
-            };
-            var categories = new List<SelectListItem>()
-            {
-                new SelectListItem()
-                {
-                    Value = "1",
-                    Text = "Seasonings"
-                },
-                new SelectListItem()
-                {
-                    Value = "2",
-                    Text = "Seasonings"
-                },
-                new SelectListItem()
-                {
-                    Value = "3",
-                    Text = "Fish"
-                },
-                new SelectListItem()
-                {
-                    Value = "4",
-                    Text = "Poultry"
-                },
-                new SelectListItem()
-                {
-                    Value = "5",
-                    Text = "Cookies"
-                },
-                new SelectListItem()
-                {
-                    Value = "6",
-                    Text = "Snacks"
-                },
-            };
-            model.ProductCategories = categories;
+            model.DashboardHeaderViewModel = dashboardTestData; 
+            model.ProductCategories = testCategories;
 
             ModelState.AddModelError("", "Unable to save product");
             return View(model);
@@ -226,5 +229,10 @@ namespace Afrimart.Controllers
             return View();
         }
 
-    }
+        private string UploadFile(IFormFile file, string folder)
+        {
+            // Todo: Implement file upload in a file service file
+            return "https://picsum.photos/250/150";
+        }
+    } 
 }

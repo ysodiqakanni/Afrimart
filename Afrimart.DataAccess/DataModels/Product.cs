@@ -42,6 +42,12 @@ namespace Afrimart.DataAccess.DataModels
         public double DiscountPercentage { get; set; } // save discount value of percentage?
        public string DisplayImageUri { get; set; }
 
+       [Column(TypeName = "decimal(5, 2)")]
+       public decimal TotalEarnings { get; set; }
+       public int SalesCount { get; set; }
+       public int ReviewCount { get; set; }
+       public double AverageRating { get; set; }
+
         public int ProductCategoryId { get; set; }
         public ProductCategory ProductCategory { get; set; }
 

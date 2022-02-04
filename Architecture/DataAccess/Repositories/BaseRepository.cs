@@ -43,6 +43,17 @@ namespace DataAccess.Repositories
 
             return savedObj.Entity;
         }
+        public async Task AddRangeAsync(List<TEntity> entities)
+        {
+            entities.ForEach(e =>
+            {
+                e.DateCreated = DateTime.UtcNow;
+                e.LastModified = DateTime.UtcNow;
+                e.IsDeleted = false;
+            }); 
+
+            await _dbset.AddRangeAsync(entities); 
+        }
         public void Update(TEntity entity)
         {
             (entity as Entity).LastModified = DateTime.UtcNow; 

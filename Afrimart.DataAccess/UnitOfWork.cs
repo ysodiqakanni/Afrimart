@@ -10,6 +10,7 @@ namespace Afrimart.DataAccess
     {
         IProductRepo ProductRepo { get; set; }
         IProductCategoryRepo ProductCategoryRepo { get; set; }
+        IProductFileRepo ProductFileRepo { get; set; }
         IUserRepo UserRepo { get; set; }
         IStoreRepo StoreRepo { get; set; }
         IRoleRepo RoleRepo { get; set; }
@@ -20,6 +21,7 @@ namespace Afrimart.DataAccess
         private readonly AfrimartDbContext _context;
         public IProductCategoryRepo ProductCategoryRepo { get; set; }
         public IProductRepo ProductRepo { get; set; }
+        public IProductFileRepo ProductFileRepo { get; set; }
         public IUserRepo UserRepo { get; set; }
         public IStoreRepo StoreRepo { get; set; }
         public IRoleRepo RoleRepo { get; set; }
@@ -33,6 +35,7 @@ namespace Afrimart.DataAccess
             StoreRepo = new StoreRepo(_context);
             RoleRepo = new RoleRepo(_context);
             ProductRepo = new ProductRepo(_context);
+            ProductFileRepo = new ProductFileRepo(_context);
         }
 
         public async Task SaveChangesAsync()

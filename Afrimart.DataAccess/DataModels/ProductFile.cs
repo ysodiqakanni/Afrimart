@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Afrimart.Dto;
 using DataModels;
 
 namespace Afrimart.DataAccess.DataModels
@@ -16,12 +17,5 @@ namespace Afrimart.DataAccess.DataModels
 
         public int ProductId { get; set; }
         public virtual Product Product { get; set; }
-    }
-
-    public enum FileType
-    {
-        DisplayImage,
-        GalleryImages,
-        ExplainerVideo
-    }
+    } 
 }

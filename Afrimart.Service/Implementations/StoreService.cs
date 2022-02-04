@@ -71,6 +71,17 @@ namespace Afrimart.Service.Implementations
             return new Tuple<bool, string>(true, savedProduct.Id.ToString());
         }
 
+        public async Task AddProductFiles(List<ProductFile> files)
+        {
+            await _uow.ProductFileRepo.AddRangeAsync(files);
+            await _uow.SaveChangesAsync();
+        }
+
+        public bool IsProductBelongToStore(int productId, string storeOwnerEmail)
+        {
+            return _uow.StoreRepo.GetProductByIdAndStoreOwnerEmail(productId, storeOwnerEmail) != null;
+        }
+
         // TOdo: move to ProductService or something -> A common function perhaps
         public string GenerateNew10DigitProductCode()
         {

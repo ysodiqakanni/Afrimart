@@ -86,5 +86,33 @@ namespace Afrimart.Api.Controllers
         {
             return Ok();
         }
+
+        [Route("products/{productId}/files")]
+        [HttpPost]
+        //[Authorize(Roles = "Seller")]
+        public async Task<IActionResult> UploadProductImages([FromBody] List<ProductFileUploadDto> uploadRequests, int productId)
+        {
+            // ensure no seller is updating another seller's product
+            var userEmail = _authorizationService.GetUserEmail();
+            if (!_storeService.IsProductBelongToStore(productId, userEmail))
+            {
+                return Forbid();
+            }
+
+            var prodFiles = new List<ProductFile>();
+            foreach (var file in uploadRequests)
+            {
+                prodFiles.Add(new ProductFile()
+                {
+                    FileName = file.FileName,
+                    FileUri = file.FileUri,
+                    FileType = file.FileType,
+                    ProductId = productId
+                });
+            }
+
+            await _storeService.AddProductFiles(prodFiles);
+            return Ok("Files saved successfully");
+        }
     }
 }
