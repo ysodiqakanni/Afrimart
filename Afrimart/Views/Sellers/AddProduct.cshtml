@@ -58,6 +58,7 @@
                             <label class="form-label" for="unp-product-files">Upload more product images</label>
                             <input class="form-control" type="file" asp-for="GalleryImages" multiple="multiple" accept="image/png, image/gif, image/jpeg">
                             <div class="form-text">Maximum file size is 3MB</div>
+                            <span asp-validation-for="GalleryImages" class="text-danger"></span>
                         </div>
                         <div class="row">
                             <label class="form-label" for="unp-standard-price">Pricing type</label>

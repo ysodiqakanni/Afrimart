@@ -57,6 +57,18 @@ namespace Afrimart.ViewModels
                     return new ValidationResult(GetErrorMessage());
                 }
             }
+            // check if it's a list
+            if (value is List<IFormFile> files)
+            {
+                foreach (var item in files)
+                {
+                    var ext = Path.GetExtension(item.FileName);
+                    if (!_extensions.Contains(ext.ToLower()))
+                    {
+                        return new ValidationResult(GetErrorMessage());
+                    }
+                }
+            }
 
             return ValidationResult.Success;
         }

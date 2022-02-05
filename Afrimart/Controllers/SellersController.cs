@@ -272,7 +272,8 @@ namespace Afrimart.Controllers
         private string UploadFile(IFormFile file, string folder)
         {
             // Todo: Implement file upload in a file service file
-            return "https://picsum.photos/250/150";
+            Random rnd = new Random();
+            return $"https://source.unsplash.com/random/250x150?sig={rnd.Next()}"; //"https://picsum.photos/250/150";
         }
     } 
 }

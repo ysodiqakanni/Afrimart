@@ -60,7 +60,7 @@ namespace Afrimart.Controllers
 
                     if (result.User.Role == AfrimartConstants.SELLER_ROLE)
                     {
-                        return RedirectToAction("Onboarding", "Sellers");
+                        return RedirectToAction("Products", "Sellers");
                     }
                     return RedirectToAction("Index", "Home");
                 }
