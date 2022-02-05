@@ -11,9 +11,9 @@ namespace Afrimart.DataAccess.DataModels
         public string Description { get; set; }
         public string DisplayImageUri { get; set; }
 
-        //public int? ParentCategoryId { get; set; }
-        //public ProductCategory Parent { get; set; }
+        public int? ParentId { get; set; }
+        public ProductCategory Parent { get; set; }
 
-        //public List<ProductCategory> Children { get; set; }
+        public List<ProductCategory> Children { get; set; }
     }
 }

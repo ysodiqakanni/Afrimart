@@ -9,6 +9,8 @@
     <Compile Remove="Migrations\20220129182226_createStoreAndRoleTables.Designer.cs" />
     <Compile Remove="Migrations\20220203173615_AddProductTable.cs" />
     <Compile Remove="Migrations\20220203173615_AddProductTable.Designer.cs" />
+    <Compile Remove="Migrations\20220205065011_ProductCategoryMultiLevel.cs" />
+    <Compile Remove="Migrations\20220205065011_ProductCategoryMultiLevel.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
