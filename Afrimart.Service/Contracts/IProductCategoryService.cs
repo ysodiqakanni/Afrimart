@@ -8,6 +8,7 @@ namespace Afrimart.Service.Contracts
 {
     public interface IProductCategoryService
     {
-        Task<ProductCategory> CreateNewProject(ProductCategory category);
+        Task<ProductCategory> CreateProductCategory(ProductCategory category);
+        Task<ProductCategory> UpdateProductCategory(int id, ProductCategory category);
     }
 }

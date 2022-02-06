@@ -198,4 +198,28 @@
 
         $("#PlatformFee").text("$" + priceObj.fee.toFixed(2) + " (4%)");
     }
+
+
+
+    // warn on large files upload
+    var displayImgField = document.getElementById("DisplayImage"); 
+    displayImgField.onchange = function() {
+        if (this.files[0].size > 4194304){ // 4MB max
+            alert("File cannot be greater than 4MB!");
+            this.value = "";
+        };
+    };
+
+    // similarly for gallery images
+    var galleryField = document.getElementById("GalleryImages"); 
+    galleryField.onchange = function () {
+        for (let file of this.files) {
+            if (file.size > 3145728){ // 3MB max
+                alert("File cannot be greater than 3MB!");
+                this.value = "";
+                return;
+            };
+        }
+       
+    };
 </script>

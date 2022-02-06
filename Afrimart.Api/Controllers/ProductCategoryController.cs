@@ -21,16 +21,16 @@ namespace Afrimart.Api.Controllers
             _productCategoryService = productCategoryService;
         }
 
-        [HttpPost]
-        public async Task<IActionResult> CreateNewCategory([FromBody] NewCategoryRequestDto request)
-        {
-            var category = new ProductCategory()
-            {
-                Name = request.Name,
-                Description = request.Description
-            };
-            await _productCategoryService.CreateNewProject(category);
-            return Ok();
-        }
+        //[HttpPost]
+        //public async Task<IActionResult> CreateNewCategory([FromBody] NewCategoryRequestDto request)
+        //{
+        //    var category = new ProductCategory()
+        //    {
+        //        Name = request.Name,
+        //        Description = request.Description
+        //    };
+        //    await _productCategoryService.CreateProductCategory(category);
+        //    return Ok();
+        //}
     }
 }
