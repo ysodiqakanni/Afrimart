@@ -9,7 +9,7 @@ namespace Afrimart.Dto.Stores
     {
         [Required]
         [RegularExpression("^[-A-Za-z0-9 ,_'=.%]+$", ErrorMessage = "Only alphabets and a few specials allowed")]
-        [StringLength(10, ErrorMessage = "{0} cannot be more than {1} characters")]
+        [StringLength(100, ErrorMessage = "{0} cannot be more than {1} characters")]
         public string Name { get; set; }
 
         [Required]
