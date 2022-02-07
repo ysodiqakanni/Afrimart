@@ -10,15 +10,17 @@ using Afrimart.Services;
 using Afrimart.ViewModels.Account;
 using Microsoft.AspNetCore.Authorization;
 using IAuthorizationService = Microsoft.AspNetCore.Authorization.IAuthorizationService;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication;
 
 namespace Afrimart.Controllers
 {
     public class AccountController : Controller
     {
-        private readonly IAuthenticationService _authenticationService;
+        private readonly Services.IAuthenticationService _authenticationService;
         private readonly IAfrimartAuthorizationService _authorizationService;
 
-        public AccountController(IAuthenticationService authenticationService, IAfrimartAuthorizationService authorizationService)
+        public AccountController(Services.IAuthenticationService authenticationService, IAfrimartAuthorizationService authorizationService)
         {
             _authenticationService = authenticationService;
             _authorizationService = authorizationService;
@@ -68,6 +70,14 @@ namespace Afrimart.Controllers
             }
 
             return View(model);
+        }
+
+        public async Task<IActionResult> Logout()
+        {
+            await HttpContext.SignOutAsync(
+                CookieAuthenticationDefaults.AuthenticationScheme);
+
+            return RedirectToAction("Index", "Home");
         }
 
     }

@@ -210,7 +210,7 @@ namespace Afrimart.Controllers
                     imagesToUpload.Add(new ProductFileUploadDto()
                     {
                         FileType = FileType.DisplayImage,
-                        FileName = $"{Guid.NewGuid()}{model.DisplayImage.FileName.Substring(0, 8)}",
+                        FileName = $"{Guid.NewGuid()}{model.DisplayImage.FileName.Substring(0, Math.Min(8, model.DisplayImage.FileName.Length))}",
                         FileUri = displayImgUrl
                     });
 
@@ -220,7 +220,7 @@ namespace Afrimart.Controllers
                         imagesToUpload.Add(new ProductFileUploadDto()
                         {
                             FileType = FileType.GalleryImages,
-                            FileName = $"{Guid.NewGuid()}{file.FileName.Substring(0, 8)}",
+                            FileName = $"{Guid.NewGuid()}{file.FileName.Substring(0, Math.Min(8, file.FileName.Length))}",
                             FileUri = url
                         });
                     }

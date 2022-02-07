@@ -28,9 +28,18 @@ namespace Afrimart.Controllers
 
         public IActionResult Index()
         {
+            // Index view model
+            // get trending products -> Fetch top 8 products order by sales count desc
+                // imgUrl, prodName, categName, catId, price, rating, 
+                // for quick view: galleryImgUrls, IsOnSale, salesPrice, prodCount, description
+            // 3 most popular categories to showcase (logic for this??
+                // categoryImg, name, 
+            // 1 special category: (maybe Ankara for now) logic??
+                // pull top 12 products in the category
+
             return View();
         }
-         
+
 
         public async Task<IActionResult> Logout()
         {

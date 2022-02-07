@@ -49,8 +49,8 @@ namespace Afrimart.ViewModels.Sellers
         public IFormFile DisplayImage { get; set; }
 
         [MaxFileSize(3 * 1024 * 1024)]
-        [AllowedExtensions(new string[] { ".jpg", ".jpeg" ,".png" })]
-        public List<IFormFile> GalleryImages { get; set; }
+        [AllowedExtensions(new string[] {".jpg", ".jpeg", ".png"})]
+        public List<IFormFile> GalleryImages { get; set; } = new List<IFormFile>();
 
         public DashboardHeaderViewModel DashboardHeaderViewModel { get; set; } = new DashboardHeaderViewModel();
         public List<SelectListItem> ProductCategories { get; set; }

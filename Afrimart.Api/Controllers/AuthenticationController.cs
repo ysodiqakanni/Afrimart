@@ -57,7 +57,8 @@ namespace Afrimart.Api.Controllers
                 User = new LoginUserDto()
                 {
                     Email = user.Email,
-                    FullName = $"{user.FirstName} {user.LastName}" 
+                    FullName = $"{user.FirstName} {user.LastName}",
+                    Role = user.UserRoles.First().Role.Name
                 }
             });
         }
