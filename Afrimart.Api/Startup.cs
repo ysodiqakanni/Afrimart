@@ -43,6 +43,7 @@ namespace Afrimart.Api
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             
             services.AddScoped<IProductCategoryService, ProductCategoryService>();
+            services.AddScoped<IProductService, ProductService>();
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IStoreService, StoreService>();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();

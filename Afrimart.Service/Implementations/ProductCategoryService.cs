@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Afrimart.DataAccess;
 using Afrimart.DataAccess.DataModels;
 using Afrimart.DataAccess.Repositories;
+using Afrimart.Dto.Public;
 using Afrimart.Service.Contracts;
 
 namespace Afrimart.Service.Implementations
@@ -54,6 +55,24 @@ namespace Afrimart.Service.Implementations
             existing.DisplayImageUri = category.DisplayImageUri;
             
             await _uow.SaveChangesAsync();
+            return category;
+        }
+
+        //public PopularCategoryCard GetSpecialCategoryForHomePage()
+        //{
+        //    // Todo: find a logic to select what category to showcase here
+        //    var category = _uow.ProductCategoryRepo.GetCategoryWithMostProducts();
+        //    return new PopularCategoryCard()
+        //    {
+        //        CategoryId = category.Id,
+        //        CategoryImgUri = category.DisplayImageUri,
+        //        CategoryName = category.Name
+        //    };
+        //}
+        public ProductCategory GetSpecialCategoryForHomePage()
+        {
+            // Todo: find a logic to select what category to showcase here
+            var category = _uow.ProductCategoryRepo.GetCategoryWithMostProducts();
             return category;
         }
     }

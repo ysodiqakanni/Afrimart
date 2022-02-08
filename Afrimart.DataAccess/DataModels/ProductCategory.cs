@@ -15,5 +15,7 @@ namespace Afrimart.DataAccess.DataModels
         public ProductCategory Parent { get; set; }
 
         public List<ProductCategory> Children { get; set; }
+
+        public List<Product> Products { get; set; }
     }
 }

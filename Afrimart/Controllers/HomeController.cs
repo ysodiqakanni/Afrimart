@@ -6,12 +6,17 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Net.Http;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using Afrimart.Dto;
+using Afrimart.Dto.Public;
 using Afrimart.Services;
+using Afrimart.ViewModels.Home;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Http;
+using ServiceHelper.Requests;
 
 namespace Afrimart.Controllers
 {
@@ -19,25 +24,37 @@ namespace Afrimart.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private readonly Services.IAuthenticationService _authenticationService;
+        private readonly IRequestManager _requestManager;
 
-        public HomeController(ILogger<HomeController> logger, Services.IAuthenticationService authenticationService)
+        public HomeController(ILogger<HomeController> logger, Services.IAuthenticationService authenticationService, IRequestManager requestManager)
         {
             _logger = logger;
             _authenticationService = authenticationService;
+            _requestManager = requestManager;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
             // Index view model
             // get trending products -> Fetch top 8 products order by sales count desc
-                // imgUrl, prodName, categName, catId, price, rating, 
-                // for quick view: galleryImgUrls, IsOnSale, salesPrice, prodCount, description
+            // imgUrl, prodName, categName, catId, price, rating, 
+            // for quick view: galleryImgUrls, IsOnSale, salesPrice, prodCount, description
             // 3 most popular categories to showcase (logic for this??
-                // categoryImg, name, 
+            // categoryImg, name, 
             // 1 special category: (maybe Ankara for now) logic??
-                // pull top 12 products in the category
+            // pull top 12 products in the category
 
-            return View();
+            var apiResponse = await _requestManager.Send<string, BaseApiResponseDto<HomepageDataResponseDto>>("/api/Home/default", null,
+                HttpMethod.Get);
+
+            var model = new HomepageViewModel()
+            {
+                SpecialCategory = apiResponse.Data.SpecialCategory,
+                PopularCategories = apiResponse.Data.PopularCategories,
+                SpecialCategoryProducts = apiResponse.Data.SpecialCategoryProducts,
+                TrendingProducts = apiResponse.Data.TrendingProducts
+            };
+            return View(model);
         }
 
 
