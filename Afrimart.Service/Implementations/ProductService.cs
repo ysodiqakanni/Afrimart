@@ -32,6 +32,7 @@ namespace Afrimart.Service.Implementations
                 ImageUrl = x.DisplayImageUri,
                 ProductPSIN = x.PSIN,
                 Rating = x.AverageRating,
+                ReviewCount = x.ReviewCount,
                 UnitsAvailable = x.QuantityAvailable,
                 GalleryImgUrls = x.ProductFiles.Where(f => f.FileType == FileType.GalleryImages).Select(f => f.FileUri)
                     .ToList()
@@ -51,6 +52,7 @@ namespace Afrimart.Service.Implementations
                 ImageUrl = x.DisplayImageUri,
                 ProductPSIN = x.PSIN,
                 Rating = x.AverageRating,
+                ReviewCount = x.ReviewCount,
                 UnitsAvailable = x.QuantityAvailable,
                 GalleryImgUrls = x.ProductFiles.Where(f => f.FileType == FileType.GalleryImages).Select(f => f.FileUri)
                     .ToList()

@@ -31,6 +31,7 @@ namespace Afrimart.Dto.Public
         public string ProductPSIN { get; set; }
         public decimal Price { get; set; }
         public double Rating { get; set; }
+        public int ReviewCount { get; set; }
 
         // Quick view
         public List<string> GalleryImgUrls { get; set; }

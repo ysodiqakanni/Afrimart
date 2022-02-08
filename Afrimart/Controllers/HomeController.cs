@@ -57,6 +57,15 @@ namespace Afrimart.Controllers
             return View(model);
         }
 
+        public IActionResult GetQuickViewPartialView()
+        {
+            // when the quickview is clicked, get the id of the product
+            // get the prod by ID from the Model
+            // send the prod to this action method
+            // send it back to the partial view to render it 
+
+            return PartialView("");
+        }
 
         public async Task<IActionResult> Logout()
         {
