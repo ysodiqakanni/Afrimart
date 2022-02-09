@@ -57,14 +57,12 @@ namespace Afrimart.Controllers
             return View(model);
         }
 
-        public IActionResult GetQuickViewPartialView()
+        public async Task<IActionResult> GetQuickViewPartialView(string psin)
         {
-            // when the quickview is clicked, get the id of the product
-            // get the prod by ID from the Model
-            // send the prod to this action method
-            // send it back to the partial view to render it 
-
-            return PartialView("");
+            var apiResponse = await _requestManager.Send<string, BaseApiResponseDto<HomeProductCard>>($"/api/Home/product/{psin}", null,
+                HttpMethod.Get);
+            
+            return PartialView("_ProductQuickView", apiResponse.Data);
         }
 
         public async Task<IActionResult> Logout()
@@ -124,5 +122,5 @@ namespace Afrimart.Controllers
                 return null;
             }
         }
-    }
+    } 
 }

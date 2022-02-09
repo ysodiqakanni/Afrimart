@@ -58,5 +58,27 @@ namespace Afrimart.Service.Implementations
                     .ToList()
             }).ToList();
         }
+
+        public HomeProductCard GetProductByPSIN(string psin)
+        {
+            var product = _uow.ProductRepo.GetProductWihCategoryAndFilesByPSIN(psin);
+            return  new HomeProductCard()
+            {
+                ProductName = product.Name,
+                Price = product.SellingPrice,
+                Description = product.Description,
+                IsOnSale = product.IsOnSale,
+                CategoryId = product.ProductCategoryId,
+                CategoryName = product.ProductCategory.Name,
+                DiscountedPrice = product.DiscountValue,
+                ImageUrl = product.DisplayImageUri,
+                ProductPSIN = product.PSIN,
+                Rating = product.AverageRating,
+                ReviewCount = product.ReviewCount,
+                UnitsAvailable = product.QuantityAvailable,
+                GalleryImgUrls = product.ProductFiles.Where(f => f.FileType == FileType.GalleryImages).Select(f => f.FileUri)
+                    .ToList()
+            };
+        }
     }
 }

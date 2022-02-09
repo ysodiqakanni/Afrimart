@@ -13,6 +13,7 @@ namespace Afrimart.DataAccess.Repositories
         List<Product> GetTrendingProducts(int count);
         List<Product> GetBestSellingProductsByCategory(int categoryId, int count);
         List<Product> GetNewestProducts(int count);
+        Product GetProductWihCategoryAndFilesByPSIN(string psin);
     }
     public class ProductRepo : BaseRepository<Product, AfrimartDbContext>, IProductRepo
     {
@@ -43,6 +44,12 @@ namespace Afrimart.DataAccess.Repositories
         {
             return _ctx.Products.OrderByDescending(p => p.DateCreated)
                 .Take(count).ToList();
+        }
+
+        public Product GetProductWihCategoryAndFilesByPSIN(string psin)
+        {
+            return _ctx.Products.Include(x => x.ProductCategory)
+                .Include(x => x.ProductFiles).FirstOrDefault(x => x.PSIN.Equals(psin));
         }
     }
 }

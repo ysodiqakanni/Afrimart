@@ -66,5 +66,16 @@ namespace Afrimart.Api.Controllers
                 Data = response
             });
         }
+
+        [HttpGet("product/{psin}")]
+        public async Task<IActionResult> GetProductByPSIN(string psin)
+        {
+            var response = _productService.GetProductByPSIN(psin);
+            return Ok(new BaseApiResponseDto<HomeProductCard>()
+            {
+                Success = true,
+                Data = response
+            });
+        }
     }
 }
