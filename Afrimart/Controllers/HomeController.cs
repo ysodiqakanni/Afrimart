@@ -65,13 +65,13 @@ namespace Afrimart.Controllers
             return PartialView("_ProductQuickView", apiResponse.Data);
         }
 
-        public async Task<IActionResult> Logout()
-        {
-            await HttpContext.SignOutAsync(
-                CookieAuthenticationDefaults.AuthenticationScheme);
+        //public async Task<IActionResult> Logout()
+        //{
+        //    await HttpContext.SignOutAsync(
+        //        CookieAuthenticationDefaults.AuthenticationScheme);
 
-            return View();
-        }
+        //    return View();
+        //}
 
         [Authorize]
         public IActionResult Privacy()

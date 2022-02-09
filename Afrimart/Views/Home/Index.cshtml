@@ -91,7 +91,7 @@
             <div class="col-lg-3 col-md-4 col-sm-6 px-2 mb-4">
                 <div class="card product-card">
                     <button class="btn-wishlist btn-sm" type="button" data-bs-toggle="tooltip" data-bs-placement="left" title="Add to wishlist"><i class="ci-heart"></i></button>
-                    <a class="card-img-top d-block overflow-hidden" href="shop-single-v1.html"><img src="@product.ImageUrl" alt="Product"></a>
+                    <a class="card-img-top d-block overflow-hidden" href="@Url.Action("DisplayProduct", "Products", new {psin=product.ProductPSIN, name=product.UrlFriendlyProductName})"><img src="@product.ImageUrl" alt="Product"></a>
                     <div class="card-body py-2">
                         <a class="product-meta d-block fs-xs pb-1" href="#">@product.CategoryName</a>
                         <h3 class="product-title fs-sm"><a href="shop-single-v1.html">@product.ProductName</a></h3>
@@ -127,7 +127,7 @@
                         }
                         else
                         {
-                            <a class="btn btn-secondary btn-sm d-block w-100 mb-2" href="shop-single-v1.html">View details</a>
+                            <a class="btn btn-secondary btn-sm d-block w-100 mb-2" href="@Url.Action("DisplayProduct", "Products", new {psin=product.ProductPSIN, name=product.UrlFriendlyProductName})">View details</a>
                         }
                         <div class="text-center">
 

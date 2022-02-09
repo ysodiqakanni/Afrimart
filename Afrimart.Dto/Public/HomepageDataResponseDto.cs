@@ -26,6 +26,7 @@ namespace Afrimart.Dto.Public
     {
         public string ImageUrl { get; set; }
         public string ProductName { get; set; }
+        public string UrlFriendlyProductName { get; set; }
         public int CategoryId { get; set; }
         public string CategoryName { get; set; }
         public string ProductPSIN { get; set; }
@@ -34,7 +35,7 @@ namespace Afrimart.Dto.Public
         public int ReviewCount { get; set; }
 
         // Quick view
-        public List<string> GalleryImgUrls { get; set; }
+        public List<string> GalleryImgUrls { get; set; } = new List<string>();
         public bool IsOnSale { get; set; }
         public decimal DiscountedPrice { get; set; }
         public double UnitsAvailable { get; set; }

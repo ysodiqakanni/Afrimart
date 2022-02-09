@@ -23,6 +23,7 @@ namespace Afrimart.Service.Implementations
             return _uow.ProductRepo.GetTrendingProducts(count).Select(x => new HomeProductCard()
             {
                 ProductName = x.Name,
+                UrlFriendlyProductName = x.Name.Replace(" ", "-"),
                 Price = x.SellingPrice,
                 Description = x.Description,
                 IsOnSale = x.IsOnSale,
@@ -43,6 +44,7 @@ namespace Afrimart.Service.Implementations
             return _uow.ProductRepo.GetBestSellingProductsByCategory(categoryId, count).Select(x => new HomeProductCard()
             {
                 ProductName = x.Name,
+                UrlFriendlyProductName = x.Name.Replace(" ", "-"),
                 Price = x.SellingPrice,
                 Description = x.Description,
                 IsOnSale = x.IsOnSale,
@@ -65,6 +67,7 @@ namespace Afrimart.Service.Implementations
             return  new HomeProductCard()
             {
                 ProductName = product.Name,
+                UrlFriendlyProductName = product.Name.Replace(" ", "-"),
                 Price = product.SellingPrice,
                 Description = product.Description,
                 IsOnSale = product.IsOnSale,
