@@ -574,6 +574,18 @@
             data: { psin: psin},
             success: function (result) {
                 $("#quickview-partial").html(result);
+
+                $(".product-gallery-thumblist-item").on("click",
+                    function(e) { 
+                        const id = $(e.currentTarget).data("id");
+                        // remove the active image
+                        $($.find("div.product-gallery-preview-item.active")).removeClass("active");
+                        $($.find("div.product-gallery-preview-item#" + id)).addClass("active");
+
+                        $($.find("a.product-gallery-thumblist-item.active")).removeClass("active");
+                        $(e.currentTarget).addClass("active");
+                        //$($.find("a.product-gallery-preview-item#" + id)).addClass("active");
+                    });
             },
             beforeSend: function() {
                 $("body").addClass("loading");
@@ -581,8 +593,8 @@
             complete: function() {
                 $("body").removeClass("loading");
             }
-        });
-
-
+        }); 
     }
+
+ 
 </script>

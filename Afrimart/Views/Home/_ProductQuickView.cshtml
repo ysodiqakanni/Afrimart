@@ -45,13 +45,13 @@
                       {
                           if (i == 0)
                           {
-                              <a class="product-gallery-thumblist-item active" href="#@i">
+                              <a class="product-gallery-thumblist-item active" href="#@i" data-id="@i">
                                   <img src="@Model.GalleryImgUrls[i]" alt="Product thumb">
                               </a>
                           }
                           else
                           {
-                              <a class="product-gallery-thumblist-item" href="#@i">
+                              <a class="product-gallery-thumblist-item" href="#@i" data-id="@i">
                                   <img src="@Model.GalleryImgUrls[i]" alt="Product thumb">
                               </a>
                           }
