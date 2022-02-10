@@ -63,7 +63,7 @@ namespace Afrimart.Service.Implementations
 
         public HomeProductCard GetProductByPSIN(string psin)
         {
-            var product = _uow.ProductRepo.GetProductWihCategoryAndFilesByPSIN(psin);
+            var product = _uow.ProductRepo.GetProductWithCategoryAndFilesByPSIN(psin);
             return  new HomeProductCard()
             {
                 ProductName = product.Name,
@@ -82,6 +82,11 @@ namespace Afrimart.Service.Implementations
                 GalleryImgUrls = product.ProductFiles.Where(f => f.FileType == FileType.GalleryImages).Select(f => f.FileUri)
                     .ToList()
             };
+        }
+
+        public Product GetProductEntityWithImagesAndReviewsByPSIN(string psin)
+        {
+            return _uow.ProductRepo.GetProductWithCategoryReviewsAndFilesByPSIN(psin);
         }
     }
 }

@@ -54,7 +54,9 @@ namespace Afrimart.DataAccess.DataModels
         public int StoreId { get; set; }
         public Store Store { get; set; }
 
-        public virtual List<ProductFile> ProductFiles { get; set; }
+        public List<ProductFile> ProductFiles { get; set; }
+
+        public virtual List<ProductReview> Reviews { get; set; }
 
         // ******* CASES ********** //
         // do we have different product forms

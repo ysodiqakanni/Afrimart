@@ -23,6 +23,7 @@ namespace Afrimart.DataAccess
         public DbSet<Role> Roles { get; set; }
         public DbSet<Product> Products { get; set; }
         public DbSet<ProductFile> ProductFiles { get; set; }
+        public DbSet<ProductReview> ProductReviews { get; set; }
         public DbSet<Store> Stores { get; set; }
     }
 }

@@ -13,7 +13,8 @@ namespace Afrimart.DataAccess.Repositories
         List<Product> GetTrendingProducts(int count);
         List<Product> GetBestSellingProductsByCategory(int categoryId, int count);
         List<Product> GetNewestProducts(int count);
-        Product GetProductWihCategoryAndFilesByPSIN(string psin);
+        Product GetProductWithCategoryAndFilesByPSIN(string psin);
+        Product GetProductWithCategoryReviewsAndFilesByPSIN(string psin);
     }
     public class ProductRepo : BaseRepository<Product, AfrimartDbContext>, IProductRepo
     {
@@ -30,26 +31,33 @@ namespace Afrimart.DataAccess.Repositories
         /// <returns></returns>
         public List<Product> GetTrendingProducts(int count)
         {
-            return _ctx.Products.Include(p => p.ProductCategory)
+            return _ctx.Products.Where(x => x.IsDeleted == false).Include(p => p.ProductCategory)
                 .Include(x => x.ProductFiles)
                 .OrderByDescending(p => p.SalesCount)
                 .Take(count).ToList();
         }
         public List<Product> GetBestSellingProductsByCategory(int categoryId, int count)
         {
-            return _ctx.Products.Where(p => p.ProductCategoryId == categoryId).OrderByDescending(p => p.SalesCount)
+            return _ctx.Products.Where(p => p.ProductCategoryId == categoryId && p.IsDeleted == false).OrderByDescending(p => p.SalesCount)
                 .Take(count).ToList();
         }
         public List<Product> GetNewestProducts(int count)
         {
-            return _ctx.Products.OrderByDescending(p => p.DateCreated)
+            return _ctx.Products.Where(x => x.IsDeleted == false).OrderByDescending(p => p.DateCreated)
                 .Take(count).ToList();
         }
 
-        public Product GetProductWihCategoryAndFilesByPSIN(string psin)
+        public Product GetProductWithCategoryAndFilesByPSIN(string psin)
         {
             return _ctx.Products.Include(x => x.ProductCategory)
-                .Include(x => x.ProductFiles).FirstOrDefault(x => x.PSIN.Equals(psin));
+                .Include(x => x.ProductFiles).FirstOrDefault(x => x.PSIN.Equals(psin) && x.IsDeleted == false);
+        }
+        public Product GetProductWithCategoryReviewsAndFilesByPSIN(string psin)
+        {
+            return _ctx.Products.Include(x => x.ProductCategory)
+                .Include(x => x.ProductFiles)
+                .Include(p => p.Reviews)
+                .FirstOrDefault(x => x.PSIN.Equals(psin) && x.IsDeleted == false);
         }
     }
 }
