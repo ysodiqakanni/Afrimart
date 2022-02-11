@@ -11,6 +11,10 @@
     <Compile Remove="Migrations\20220203173615_AddProductTable.Designer.cs" />
     <Compile Remove="Migrations\20220205065011_ProductCategoryMultiLevel.cs" />
     <Compile Remove="Migrations\20220205065011_ProductCategoryMultiLevel.Designer.cs" />
+    <Compile Remove="Migrations\20220211015734_CreateReviewsTable.cs" />
+    <Compile Remove="Migrations\20220211015734_CreateReviewsTable.Designer.cs" />
+    <Compile Remove="Migrations\20220211021800_CreateReviewsTable.cs" />
+    <Compile Remove="Migrations\20220211021800_CreateReviewsTable.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

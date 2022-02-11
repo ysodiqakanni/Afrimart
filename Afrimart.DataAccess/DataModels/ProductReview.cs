@@ -18,8 +18,9 @@ namespace Afrimart.DataAccess.DataModels
         public int LikesCount { get; set; }
         public int DislikesCount { get; set; }
 
-        public int UserId { get; set; }
-        public User User { get; set; }
+        // https://stackoverflow.com/a/17127512
+        public int? ReviewerId { get; set; }
+        public User Reviewer { get; set; }
 
         public int ProductId { get; set; }
         public Product Product { get; set; }

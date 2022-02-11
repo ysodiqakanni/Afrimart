@@ -5,6 +5,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Afrimart.Dto;
+using Afrimart.Dto.Products;
 using Afrimart.Dto.Public;
 using Afrimart.ViewModels.Products;
 using ServiceHelper.Requests;
@@ -37,21 +38,37 @@ namespace Afrimart.Controllers
                 
             //};
 
-            var apiResponse = await _requestManager.Send<string, BaseApiResponseDto<HomeProductCard>>($"/api/Home/product/{psin}", null,
+            var apiResponse = await _requestManager.Send<string, BaseApiResponseDto<ProductDetailPageResponseDto>>($"/api/Products/{psin}", null,
                 HttpMethod.Get);
 
-            ProductDetailPageViewModel model = apiResponse.Data as ProductDetailPageViewModel;
+            // ProductDetailPageViewModel model = apiResponse.Data as ProductDetailPageViewModel;
 
-            if (model == null)
+            var data = apiResponse.Data;
+            var model = new ProductDetailPageViewModel()
             {
-                model = new ProductDetailPageViewModel()
-                {
-                    ProductName = apiResponse.Data.ProductName,
-                    Description = apiResponse.Data.Description,
-                    ImageUrl = apiResponse.Data.ImageUrl,
-                    GalleryImgUrls = apiResponse.Data.GalleryImgUrls
-                };
-            }
+                ProductName = data.ProductName,
+                Description = data.Description,
+                ImageUrl = data.ImageUrl,
+                GalleryImgUrls = data.GalleryImgUrls,
+                ReviewCount = data.ReviewCount,
+                UnitsAvailable = data.UnitsAvailable,
+                ProductPSIN = data.ProductPSIN,
+                Price = data.Price,
+                CategoryId = data.CategoryId,
+                DiscountedPrice = data.DiscountedPrice,
+                CategoryName = data.CategoryName,
+                SellingPrice = data.IsOnSale ? data.DiscountedPrice : data.Price,
+                FiveStarRatingCount = data.FiveStarRatingCount,
+                FourStarRatingCount = data.FourStarRatingCount,
+                ThreeStarRatingCount = data.ThreeStarRatingCount,
+                TwoStarRatingCount = data.TwoStarRatingCount,
+                OneStarRatingCount = data.OneStarRatingCount,
+                IsOnSale = data.IsOnSale,
+                Rating = data.Rating,
+                UrlFriendlyProductName = data.UrlFriendlyProductName,
+                RelatedProducts = data.RelatedProducts,
+                Reviews = data.Reviews
+            }; 
 
             return View(model);
         }

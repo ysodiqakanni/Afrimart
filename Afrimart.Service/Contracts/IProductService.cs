@@ -12,5 +12,6 @@ namespace Afrimart.Service.Contracts
         List<HomeProductCard> GetBestSellersByCategory(int categoryId, int count);
         HomeProductCard GetProductByPSIN(string psin);
         Product GetProductEntityWithImagesAndReviewsByPSIN(string psin);
+        List<HomeProductCard> GetRelatedProducts(Product product, int count);
     }
 }

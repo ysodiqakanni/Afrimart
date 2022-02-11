@@ -88,5 +88,31 @@ namespace Afrimart.Service.Implementations
         {
             return _uow.ProductRepo.GetProductWithCategoryReviewsAndFilesByPSIN(psin);
         }
+
+        public List<HomeProductCard> GetRelatedProducts(Product product, int count)
+        {
+            var products = _uow.ProductRepo.Find(x => x.IsDeleted == false
+                                                      && x.ProductCategoryId == product.ProductCategoryId)
+                .OrderByDescending(x => x.SalesCount).Take(count);
+
+            var results = products.Select(x => new HomeProductCard()
+            {
+                ProductName = x.Name,
+                UrlFriendlyProductName = x.Name.Replace(" ", "-"),
+                Price = x.SellingPrice,
+                Description = x.Description,
+                IsOnSale = x.IsOnSale,
+                CategoryId = x.ProductCategoryId,
+                CategoryName = x.ProductCategory.Name,
+                DiscountedPrice = x.DiscountValue,
+                ImageUrl = x.DisplayImageUri,
+                ProductPSIN = x.PSIN,
+                Rating = x.AverageRating,
+                ReviewCount = x.ReviewCount,
+                UnitsAvailable = x.QuantityAvailable
+            }).ToList();
+
+            return results;
+        }
     }
 }
