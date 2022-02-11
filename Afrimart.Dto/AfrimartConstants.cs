@@ -9,5 +9,7 @@ namespace Afrimart.Dto
         public static string SELLER_ROLE = "Seller";
         public static string ADMIN_ROLE = "Admin";
         public static string SUPER_ADMIN_ROLE = "SuperAdmin";
+
+        public static string CART_ID_SESSION_KEY = "Afr_CartIdn";
     }
 }
