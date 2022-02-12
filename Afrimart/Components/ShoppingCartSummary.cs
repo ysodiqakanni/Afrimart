@@ -47,64 +47,22 @@ namespace Afrimart.Components
                     CartItems = apiResponse.Data.CartItems,
                     CartAmount = apiResponse.Data.CartAmount
                 };
-            }
-
-           
-
-            //var model = new CartPartialViewModel()
-            //{
-            //    CartAmount = 254.78m,
-            //    CartItems = new List<CartItemDto>()
-            //    {
-            //        new CartItemDto()
-            //        {
-            //            ProductName = "Test this product and see",
-            //            ProductPSIN = "ADKJD",
-            //            UnitPrice = 200m,
-            //            ProductImageUri = "https://source.unsplash.com/random/250x150?sig=2323",
-            //            Quantity = 23
-            //        },
-            //        new CartItemDto()
-            //        {
-            //            ProductName = "Test this product and see",
-            //            ProductPSIN = "ADKJD",
-            //            UnitPrice = 200m,
-            //            ProductImageUri = "https://source.unsplash.com/random/250x150?sig=23233",
-            //            Quantity = 23
-            //        },
-            //        new CartItemDto()
-            //        {
-            //            ProductName = "Test this product and see",
-            //            ProductPSIN = "ADKJD",
-            //            UnitPrice = 200m,
-            //            ProductImageUri = "https://source.unsplash.com/random/250x150?sig=23232",
-            //            Quantity = 3
-            //        },
-            //        new CartItemDto()
-            //        {
-            //            ProductName = "Test this product and see",
-            //            ProductPSIN = "ADKJD",
-            //            UnitPrice = 200m,
-            //            ProductImageUri = "https://source.unsplash.com/random/250x150?sig=232354",
-            //            Quantity = 11
-            //        },
-            //        new CartItemDto()
-            //        {
-            //            ProductName = "Test this product and see",
-            //            ProductPSIN = "ADKJD",
-            //            UnitPrice = 200m,
-            //            ProductImageUri = "https://source.unsplash.com/random/250x150?sig=23230",
-            //            Quantity = 1
-            //        }
-
-            //    }
-            //};
+            } 
             return View(model);
         }
         public string GetCartIdIfExists()
         {
 
             var cartId = HttpContext.Session.GetString(AfrimartConstants.CART_ID_SESSION_KEY);
+
+            // what if user is logged in and has an associated cart in the db?
+            // but somehow the cart ID is lost in session.
+            // So...
+            if (string.IsNullOrWhiteSpace(cartId))
+            {
+                // so cart ID will be the user ID if logged in, or null otherwise
+                cartId = HttpContext.User.Identity.Name;
+            }
            
             return cartId;
         }

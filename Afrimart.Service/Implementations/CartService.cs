@@ -70,6 +70,7 @@ namespace Afrimart.Service.Implementations
 
         public ShoppingCart GetCart(string cartIdentifier)
         {
+            return _uow.CartRepo.GetCart(cartIdentifier);
             return _uow.CartRepo.FindInclude(x => x.CartIdentifier.Equals(cartIdentifier), new List<string>(){"CartItems" })
                 .FirstOrDefault();
         }

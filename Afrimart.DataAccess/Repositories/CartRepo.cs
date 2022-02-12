@@ -10,7 +10,7 @@ namespace Afrimart.DataAccess.Repositories
 { 
     public interface ICartRepo : IBaseRepository<ShoppingCart, AfrimartDbContext>
     {
-
+        ShoppingCart GetCart(string cartId);
     }
     public class CartRepo : BaseRepository<ShoppingCart, AfrimartDbContext>, ICartRepo
     {
@@ -19,6 +19,12 @@ namespace Afrimart.DataAccess.Repositories
         {
             _ctx = ctx;
         }
-          
+
+        public ShoppingCart GetCart(string cartId)
+        {
+            var cart = _ctx.Carts.Include("CartItems.Product").SingleOrDefault(x => x.CartIdentifier.Equals(cartId));
+
+            return cart;
+        }
     }
 }
