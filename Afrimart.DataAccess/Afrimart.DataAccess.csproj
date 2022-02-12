@@ -15,6 +15,8 @@
     <Compile Remove="Migrations\20220211015734_CreateReviewsTable.Designer.cs" />
     <Compile Remove="Migrations\20220211021800_CreateReviewsTable.cs" />
     <Compile Remove="Migrations\20220211021800_CreateReviewsTable.Designer.cs" />
+    <Compile Remove="Migrations\20220212041905_AddShoppingCartTables.cs" />
+    <Compile Remove="Migrations\20220212041905_AddShoppingCartTables.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

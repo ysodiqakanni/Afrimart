@@ -13,8 +13,7 @@ namespace Afrimart.DataAccess
         }
 
         protected override void OnModelCreating(ModelBuilder builder)
-        {
-            
+        { 
             base.OnModelCreating(builder);
         }
 
@@ -25,5 +24,7 @@ namespace Afrimart.DataAccess
         public DbSet<ProductFile> ProductFiles { get; set; }
         public DbSet<ProductReview> ProductReviews { get; set; }
         public DbSet<Store> Stores { get; set; }
+        public DbSet<ShoppingCart> Carts { get; set; }
+        public DbSet<CartItem> CartItems { get; set; }
     }
 }

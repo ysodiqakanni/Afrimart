@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
+using Afrimart.DataAccess.DataModels;
 using Afrimart.DataAccess.Repositories;
+using DataAccess.Repositories;
 
 namespace Afrimart.DataAccess
 {
@@ -14,6 +16,8 @@ namespace Afrimart.DataAccess
         IUserRepo UserRepo { get; set; }
         IStoreRepo StoreRepo { get; set; }
         IRoleRepo RoleRepo { get; set; }
+        ICartRepo CartRepo { get; set; }
+        ICartItemRepo CartItemRepo { get; set; }
         Task SaveChangesAsync();
     }
     public class UnitOfWork : IUnitOfWork, IDisposable
@@ -25,6 +29,8 @@ namespace Afrimart.DataAccess
         public IUserRepo UserRepo { get; set; }
         public IStoreRepo StoreRepo { get; set; }
         public IRoleRepo RoleRepo { get; set; }
+        public ICartRepo CartRepo { get; set; }
+        public ICartItemRepo CartItemRepo { get; set; }
 
 
         public UnitOfWork(AfrimartDbContext context)
@@ -36,6 +42,8 @@ namespace Afrimart.DataAccess
             RoleRepo = new RoleRepo(_context);
             ProductRepo = new ProductRepo(_context);
             ProductFileRepo = new ProductFileRepo(_context);
+            CartRepo = new CartRepo(_context);
+            CartItemRepo = new CartItemRepo(_context);
         }
 
         public async Task SaveChangesAsync()

@@ -77,7 +77,15 @@ namespace DataAccess.Repositories
         {
             return _dbContext.Set<TEntity>().Where(t => t.IsDeleted == false);
         }
-        
+        public IQueryable<TEntity> FindInclude(Expression<Func<TEntity, bool>> predicate, List<string> includeProperties)
+        {
+            var data = _dbContext.Set<TEntity>();
+            foreach (var prop in includeProperties)
+            {
+                data.Include(prop);
+            }
+            return data.Where(predicate).Where(t => t.IsDeleted == false);
+        }
 
     }
 }

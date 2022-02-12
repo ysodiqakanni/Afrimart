@@ -30,6 +30,12 @@ namespace Afrimart
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
+            services.AddSession(options =>
+            {
+                options.IdleTimeout = TimeSpan.FromSeconds(10);
+                options.Cookie.HttpOnly = true;
+                options.Cookie.IsEssential = true;
+            });
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddScoped<IAuthenticationService, AuthenticationService>();
@@ -84,8 +90,8 @@ namespace Afrimart
             app.UseRouting();
 
             app.UseAuth();
+            app.UseSession();
 
-        
 
             app.UseEndpoints(endpoints =>
             {
