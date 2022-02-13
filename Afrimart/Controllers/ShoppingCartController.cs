@@ -77,12 +77,22 @@ namespace Afrimart.Controllers
 
             return PartialView("_CartItemsPartial", model);
         }
-        public IActionResult RemoveFromCart(string psin, int quantity)
-        {
-            // get the cartItem by psin and cartId
-            // if quantity is >= totalCount, remove the cartItem completely
-            // otherwise, just reduce the quantity and update prices
-            return View();
+        public async Task<IActionResult> RemoveFromCartPartial(string psin)
+        { 
+            var cartId = GetCartId();
+            await _requestManager.Send<string, string>($"/api/Cart/{cartId},{psin}", null,
+                HttpMethod.Delete);
+
+            var apiResponse = await _requestManager.Send<string, BaseApiResponseDto<ShoppingCartResponseDto>>($"/api/Cart/{cartId}", null,
+                HttpMethod.Get);
+
+            var model = new CartPartialViewModel()
+            {
+                CartItems = apiResponse.Data.CartItems,
+                CartAmount = apiResponse.Data.CartAmount
+            };
+
+            return PartialView("_CartItemsPartial", model); 
         }
         
         public IActionResult CartSummary()

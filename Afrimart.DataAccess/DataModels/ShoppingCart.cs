@@ -19,7 +19,7 @@ namespace Afrimart.DataAccess.DataModels
     {
         public int Quantity { get; set; }
 
-        [Column(TypeName = "decimal(5, 2)")]
+        [Column(TypeName = "decimal(6, 2)")]
         public decimal NetAmount { get; set; }
 
         public int ProductId { get; set; }

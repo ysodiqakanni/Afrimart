@@ -10,5 +10,6 @@ namespace Afrimart.Service.Contracts
     {
         Task AddToCart(string cartId, string psin, int count);
         ShoppingCart GetCart(string cartIdentifier);
+        Task RemoveProductFromCart(string cartId, string psin);
     }
 }

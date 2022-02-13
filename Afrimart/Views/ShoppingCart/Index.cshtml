@@ -121,8 +121,7 @@
             url: '@Url.Action("AddToCartPartial", "ShoppingCart")',
             type: 'GET',
             data: { psin: psin, quantity: qty},
-            success: function (result) {
-                console.log(result);
+            success: function (result) { 
                 $("#divCartItems").html(result);
 
                 const amt = $("#hdsubtotal").val();
@@ -140,11 +139,28 @@
             }
         });
     }
-    function removeCartItem(el) {
-        console.log("removing...");
+    function removeCartItem(el) { 
         const psin = $(el).data("psin");
+        $.ajax({
+            url: '@Url.Action("RemoveFromCartPartial", "ShoppingCart")',
+            type: 'GET',
+            data: { psin: psin},
+            success: function (result) { 
+                $("#divCartItems").html(result);
 
-        console.log(psin);
-
+                const amt = $("#hdsubtotal").val();
+                const itmCount = $("#hditmCount").val();
+               
+                $("#subTotal").text("$" + amt);
+                $("#anCartAmount").text(amt);
+                $("#spCartCount").text(itmCount);
+            },
+            beforeSend: function() {
+                $("body").addClass("loading");
+            },
+            complete: function() {
+                $("body").removeClass("loading");
+            }
+        });
     }
 </script>

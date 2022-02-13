@@ -56,5 +56,13 @@ namespace Afrimart.Api.Controllers
 
             return Ok();
         }
+
+        [HttpDelete("{cartId},{psin}")]
+        public async Task<IActionResult> RemoveProductFromCart(string cartId, string psin)
+        {
+            await _cartService.RemoveProductFromCart(cartId, psin);
+
+            return Ok();
+        }
     }
 }

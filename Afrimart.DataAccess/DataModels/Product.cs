@@ -16,7 +16,7 @@ namespace Afrimart.DataAccess.DataModels
         /// </summary>
         public string PSIN { get; set; }
 
-        [Column(TypeName = "decimal(5, 2)")]
+        [Column(TypeName = "decimal(6, 2)")]
         public decimal UnitPrice { get; set; } // will be price per weight for weightable products
 
         /// <summary>
@@ -24,25 +24,25 @@ namespace Afrimart.DataAccess.DataModels
         /// So, selling price = unitPrice when no sale, and = unit-discount when on sale
         /// selling price must already include PLATFORM FEE (certain percentage out of selling price) and tax
         /// </summary>
-        [Column(TypeName = "decimal(5, 2)")]
+        [Column(TypeName = "decimal(6, 2)")]
         public decimal SellingPrice { get; set; } // The DisplayPrice
 
         public bool IsWeighted { get; set; }
         public string MeasurementUnit { get; set; }  // For weighted products only
 
-        [Column(TypeName = "decimal(5, 2)")]
+        [Column(TypeName = "decimal(6, 2)")]
         public decimal Tax { get; set; }
         public string Tags { get; set; }
         public int QuantityAvailable { get; set; }
 
         public bool IsOnSale { get; set; }
         // we can keep the % as float and display as int
-        [Column(TypeName = "decimal(5, 2)")]
+        [Column(TypeName = "decimal(6, 2)")]
         public decimal DiscountValue { get; set; }
         public double DiscountPercentage { get; set; } // save discount value of percentage?
        public string DisplayImageUri { get; set; }
 
-       [Column(TypeName = "decimal(5, 2)")]
+       [Column(TypeName = "decimal(6, 2)")]
        public decimal TotalEarnings { get; set; }
        public int SalesCount { get; set; }
        public int ReviewCount { get; set; }

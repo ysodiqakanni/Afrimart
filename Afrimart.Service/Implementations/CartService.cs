@@ -20,6 +20,10 @@ namespace Afrimart.Service.Implementations
         {
             var product = _uow.ProductRepo.Find(x => x.PSIN.Equals(psin) && x.IsDeleted == false).Single();
             // check that count is not negative and not greater than product Units available
+            if (count < 1 || count > product.QuantityAvailable)
+            {
+                throw new InvalidOperationException("Operation not allowed!!!");
+            }
 
             var cart = _uow.CartRepo.GetCart(cartId);
             if (cart == null)
@@ -68,6 +72,22 @@ namespace Afrimart.Service.Implementations
             var data = _uow.CartRepo.GetCart(cartIdentifier);
 
             return data;
+        }
+        public async Task RemoveProductFromCart(string cartId, string psin)
+        {
+            var product = _uow.ProductRepo.Find(x => x.PSIN.Equals(psin) && x.IsDeleted == false).Single();
+            // check that count is not negative and not greater than product Units available
+
+            var cart = _uow.CartRepo.GetCart(cartId);
+            if (cart == null || cart.CartItems == null || cart.CartItems.Any(x => x.ProductId == product.Id) == false)
+            {
+                return;
+            }
+             
+            var itemToRemove = cart.CartItems.Single(x => x.ProductId == product.Id);
+            cart.CartItems.Remove(itemToRemove); 
+
+            await _uow.SaveChangesAsync();
         }
     }
 }

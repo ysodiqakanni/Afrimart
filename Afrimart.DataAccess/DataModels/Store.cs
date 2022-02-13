@@ -14,7 +14,7 @@ namespace Afrimart.DataAccess.DataModels
         public string Zip { get; set; }
         public string EIN { get; set; }
 
-        [Column(TypeName = "decimal(5, 2)")]
+        [Column(TypeName = "decimal(6, 2)")]
         public decimal TotalEarnings { get; set; } // earnings across all products
         public int TotalSalesCount { get; set; }
         public int TotalReviewCount { get; set; }  // Across all products
