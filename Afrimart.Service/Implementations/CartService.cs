@@ -19,7 +19,9 @@ namespace Afrimart.Service.Implementations
         public async Task AddToCart(string cartId, string psin, int count)
         {
             var product = _uow.ProductRepo.Find(x => x.PSIN.Equals(psin) && x.IsDeleted == false).Single();
-            var cart = _uow.CartRepo.Find(c => c.CartIdentifier.Equals(cartId)).SingleOrDefault();
+            // check that count is not negative and not greater than product Units available
+
+            var cart = _uow.CartRepo.GetCart(cartId);
             if (cart == null)
             {
                 // create a new cart
@@ -51,8 +53,7 @@ namespace Afrimart.Service.Implementations
                 if (cartItem != null)
                 {
                     cartItem.Quantity += count;
-                    cartItem.NetAmount = cartItem.Quantity * product.SellingPrice;
-                    
+                    cartItem.NetAmount = cartItem.Quantity * product.SellingPrice; 
                 }
                 else
                 {
@@ -70,9 +71,10 @@ namespace Afrimart.Service.Implementations
 
         public ShoppingCart GetCart(string cartIdentifier)
         {
-            return _uow.CartRepo.GetCart(cartIdentifier);
-            return _uow.CartRepo.FindInclude(x => x.CartIdentifier.Equals(cartIdentifier), new List<string>(){"CartItems" })
-                .FirstOrDefault();
+            //return _uow.CartRepo.GetCart(cartIdentifier);
+            var data = _uow.CartRepo.GetCart(cartIdentifier);
+
+            return data;
         }
     }
 }

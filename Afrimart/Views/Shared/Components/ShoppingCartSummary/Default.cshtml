@@ -2,7 +2,7 @@
 
 <div class="navbar-tool dropdown ms-3">
     <a class="navbar-tool-icon-box bg-secondary dropdown-toggle" href="@Url.Action("Index","ShoppingCart")">
-        <span class="navbar-tool-label">@Model.CartItems.Count</span>
+        <span class="navbar-tool-label">@Model.CartItems.Sum(x=>x.Quantity)</span>
         <i class="navbar-tool-icon ci-cart"></i>
     </a><a class="navbar-tool-text" href="@Url.Action("Index","ShoppingCart")"><small>My Cart</small>$@Model.CartAmount</a>
     <!-- Cart dropdown-->

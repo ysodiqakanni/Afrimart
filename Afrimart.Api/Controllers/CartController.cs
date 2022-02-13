@@ -36,7 +36,8 @@ namespace Afrimart.Api.Controllers
                         ProductPSIN = x.Product.PSIN,
                         UnitPrice = x.Product.SellingPrice,
                         Quantity = x.Quantity,
-                        ProductImageUri = x.Product.DisplayImageUri
+                        ProductImageUri = x.Product.DisplayImageUri,
+                        AvailableUnits = x.Product.QuantityAvailable
                     }).ToList(),
                 CartAmount = cart.CartItems.Sum(x => x.NetAmount)
             };

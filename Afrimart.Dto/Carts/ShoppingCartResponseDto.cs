@@ -17,5 +17,7 @@ namespace Afrimart.Dto.Carts
         public int Quantity { get; set; }
         public decimal UnitPrice { get; set; }
         public string ProductPSIN { get; set; }
+        public int  AvailableUnits { get; set; }
+         
     }
 }

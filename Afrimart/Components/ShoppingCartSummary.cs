@@ -23,17 +23,7 @@ namespace Afrimart.Components
         }
 
         public async Task<IViewComponentResult> InvokeAsync()
-        {
-            //var items = _shoppingCart.GetShoppingCartItems();
-            //// var items = new List<ShoppingCartItem>() { new ShoppingCartItem(), new ShoppingCartItem() };
-            //_shoppingCart.ShoppingCartItems = items;
-
-            //var shoppingCartViewModel = new ShoppingCartViewModel
-            //{
-            //    ShoppingCart = _shoppingCart,
-            //    ShoppingCartTotal = _shoppingCart.GetShoppingCartTotal()
-            //};
-
+        { 
             var model = new CartPartialViewModel();
             string cartId = GetCartIdIfExists();
 

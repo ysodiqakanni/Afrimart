@@ -8,6 +8,7 @@ using Afrimart.Dto;
 using Afrimart.Dto.Carts;
 using Microsoft.AspNetCore.Http;
 using ServiceHelper.Requests;
+using Afrimart.ViewModels.Products;
 
 namespace Afrimart.Controllers
 {
@@ -20,9 +21,23 @@ namespace Afrimart.Controllers
         }
         // main shopping cart page
         [Route("cart")]
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            var model = new CartPartialViewModel();
+            string cartId = GetCartId();
+
+            if (string.IsNullOrWhiteSpace(cartId) == false)
+            {
+                var apiResponse = await _requestManager.Send<string, BaseApiResponseDto<ShoppingCartResponseDto>>($"/api/Cart/{cartId}", null,
+                    HttpMethod.Get);
+
+                model = new CartPartialViewModel()
+                {
+                    CartItems = apiResponse.Data.CartItems,
+                    CartAmount = apiResponse.Data.CartAmount
+                };
+            }
+            return View(model);
         }
         public async Task<IActionResult> AddToCart(string psin, int quantity=1)
         { 
@@ -55,18 +70,9 @@ namespace Afrimart.Controllers
         { 
 
             var cartId = HttpContext.Session.GetString(AfrimartConstants.CART_ID_SESSION_KEY);
-            if (string.IsNullOrWhiteSpace(cartId))
-            {
-                if (!string.IsNullOrWhiteSpace(HttpContext.User.Identity.Name))
-                {
-                    cartId = HttpContext.User.Identity.Name;
-                }
-                else
-                {
-                    cartId = Guid.NewGuid().ToString();
-                }
-                HttpContext.Session.SetString(AfrimartConstants.CART_ID_SESSION_KEY, cartId);
-            }
+            if (!string.IsNullOrWhiteSpace(cartId)) return cartId;
+            cartId = !string.IsNullOrWhiteSpace(HttpContext.User.Identity.Name) ? HttpContext.User.Identity.Name : Guid.NewGuid().ToString();
+            HttpContext.Session.SetString(AfrimartConstants.CART_ID_SESSION_KEY, cartId);
 
             return cartId;
         }
