@@ -98,7 +98,7 @@
                         <div class="d-flex justify-content-between">
                             @if (product.UnitsAvailable > 0)
                             {
-                                <div class="product-price"><span class="text-accent">$@Math.Truncate(product.Price).<small>@((int) ((product.Price - Math.Truncate(product.Price)) * 100))</small></span></div>
+                                <div class="product-price"><span class="text-accent">$@Math.Truncate(product.SellingPrice).<small>@((int) ((product.SellingPrice - Math.Truncate(product.SellingPrice)) * 100))</small></span></div>
                             }
                             else
                             {

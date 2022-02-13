@@ -30,6 +30,7 @@ namespace Afrimart.Dto.Public
         public int CategoryId { get; set; }
         public string CategoryName { get; set; }
         public string ProductPSIN { get; set; }
+        public decimal SellingPrice { get; set; }  // will be the discounted price when on sale
         public decimal Price { get; set; }
         public double Rating { get; set; }
         public int ReviewCount { get; set; }

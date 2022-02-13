@@ -34,7 +34,7 @@ namespace Afrimart.ViewModels.Sellers
         public bool IsWeighted { get; set; }
         public string WeightUnit { get; set; }
 
-        public decimal Tax { get; set; }
+        // public decimal Tax { get; set; }
         public string Tags { get; set; }
 
         public int QuantityAvailable { get; set; }

@@ -63,7 +63,7 @@ namespace Afrimart.Api.Controllers
                 DiscountPercentage =
                     Double.Parse(((100 * productRequest.SalePrice) / productRequest.UnitPrice).ToString()),
                 ProductCategoryId = int.Parse(productRequest.SelectedCategory),
-                SellingPrice = productRequest.DisplayPrice,
+                SellingPrice = CalculateProductSellingPrice(productRequest.UnitPrice, productRequest.IsOnSale, productRequest.SalePrice),
                 Tags = productRequest.Tags,
                 QuantityAvailable = productRequest.QuantityAvailable,
                 Tax = productRequest.Tax
@@ -140,6 +140,14 @@ namespace Afrimart.Api.Controllers
                 Success = true,
                 Data = data
             });
+        }
+
+        private decimal CalculateProductSellingPrice(decimal regularPrice, bool isOnsale, decimal discountedPrice)
+        {
+            var sellingPrice = isOnsale ? discountedPrice : regularPrice;
+            sellingPrice += AfrimartConstants.PRODUCT_TRANSACTION_FEE_PERCENTAGE / 100.0m * sellingPrice;
+
+            return sellingPrice;
         }
     }
 }

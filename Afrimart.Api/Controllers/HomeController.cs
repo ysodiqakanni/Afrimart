@@ -41,6 +41,7 @@ namespace Afrimart.Api.Controllers
                 {
                     ProductName = x.Name,
                     Price = x.SellingPrice,
+                    SellingPrice = x.SellingPrice,
                     Description = x.Description,
                     IsOnSale = x.IsOnSale,
                     CategoryId = x.ProductCategoryId,

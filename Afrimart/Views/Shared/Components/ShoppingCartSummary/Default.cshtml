@@ -15,9 +15,9 @@
                     <div class="widget-cart-item pb-2 border-bottom">
                         <button class="btn-close text-danger" type="button" aria-label="Remove"><span aria-hidden="true">&times;</span></button>
                         <div class="d-flex align-items-center">
-                            <a class="flex-shrink-0" href="@Url.Action("DisplayProduct","Products", new{psin=@item.ProductPSIN, name=@item.ProductName})"><img src="@item.ProductImageUri" width="64" alt="Product"></a>
+                            <a class="flex-shrink-0" href="@Url.Action("DisplayProduct","Products", new{psin=@item.ProductPSIN, name=@item.UrlFriendlyProductName})"><img src="@item.ProductImageUri" width="64" alt="Product"></a>
                             <div class="ps-2">
-                                <h6 class="widget-product-title"><a href="@Url.Action("DisplayProduct","Products", new{psin=@item.ProductPSIN, name=@item.ProductName})">@item.ProductName</a></h6>
+                                <h6 class="widget-product-title"><a href="@Url.Action("DisplayProduct","Products", new{psin=@item.ProductPSIN, name=@item.UrlFriendlyProductName})">@item.ProductName</a></h6>
                                 <div class="widget-product-meta"><span class="text-accent me-2">$@item.UnitPrice</span><span class="text-muted">x @item.Quantity</span></div>
                             </div>
                         </div>

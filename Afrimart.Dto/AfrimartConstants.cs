@@ -13,5 +13,6 @@ namespace Afrimart.Dto
         public static string CART_ID_SESSION_KEY = "Afr_CartIdn";
 
         public static int MAXIMUM_PER_PRODUCT_UNITS_PER_CART = 20;
+        public static int PRODUCT_TRANSACTION_FEE_PERCENTAGE = 4;
     }
 }

@@ -25,6 +25,7 @@ namespace Afrimart.Service.Implementations
                 ProductName = x.Name,
                 UrlFriendlyProductName = x.Name.Replace(" ", "-"),
                 Price = x.SellingPrice,
+                SellingPrice = x.SellingPrice,
                 Description = x.Description,
                 IsOnSale = x.IsOnSale,
                 CategoryId = x.ProductCategoryId,
@@ -45,7 +46,8 @@ namespace Afrimart.Service.Implementations
             {
                 ProductName = x.Name,
                 UrlFriendlyProductName = x.Name.Replace(" ", "-"),
-                Price = x.SellingPrice,
+                Price = x.UnitPrice,
+                SellingPrice = x.SellingPrice,
                 Description = x.Description,
                 IsOnSale = x.IsOnSale,
                 CategoryId = x.ProductCategoryId,
@@ -68,7 +70,8 @@ namespace Afrimart.Service.Implementations
             {
                 ProductName = product.Name,
                 UrlFriendlyProductName = product.Name.Replace(" ", "-"),
-                Price = product.SellingPrice,
+                Price = product.UnitPrice,
+                SellingPrice = product.SellingPrice,
                 Description = product.Description,
                 IsOnSale = product.IsOnSale,
                 CategoryId = product.ProductCategoryId,
@@ -99,7 +102,8 @@ namespace Afrimart.Service.Implementations
             {
                 ProductName = x.Name,
                 UrlFriendlyProductName = x.Name.Replace(" ", "-"),
-                Price = x.SellingPrice,
+                Price = x.UnitPrice,
+                SellingPrice = x.SellingPrice,
                 Description = x.Description,
                 IsOnSale = x.IsOnSale,
                 CategoryId = x.ProductCategoryId,

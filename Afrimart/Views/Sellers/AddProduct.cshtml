@@ -1,4 +1,5 @@
-﻿@model Afrimart.ViewModels.Sellers.AddProductViewModel
+﻿@using Afrimart.Dto
+@model Afrimart.ViewModels.Sellers.AddProductViewModel
 @{
     ViewData["Title"] = "Complete profile";
     Layout = "_SellerLayout";
@@ -99,13 +100,13 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-sm-6 mb-3">
+                            @*<div class="col-sm-6 mb-3">
                                 <label class="form-label" for="unp-standard-price">Tax</label>
                                 <div class="input-group">
                                     <span class="input-group-text"><i class="ci-dollar"></i></span>
                                     <input class="form-control" type="text" asp-for="Tax" onchange="onUnitPriceChange()">
                                 </div>
-                            </div>
+                            </div>*@
                             <div class="col-sm-6 mb-3">
                                 <label class="form-label" for="unp-standard-price">Quantity Available</label>
                                 <div class="input-group">
@@ -157,11 +158,11 @@
     }
 
 
-    function calculatePrice(up, onSale, sp, tx) {
+    function calculatePrice(up, onSale, sp) {
         if (sp === 0) sp = up;
 
-        let price = onSale === true ? sp + tx : up + tx;
-        const platformFee = price * 0.04; // 4%
+        let price = onSale === true ? sp : up;
+        const platformFee = price * (@AfrimartConstants.PRODUCT_TRANSACTION_FEE_PERCENTAGE * 0.01); // 4%
         price += platformFee;
 
         return {
@@ -173,14 +174,14 @@
         const unitPriceVal = Number($("#UnitPrice").val());
         const discountAvailable = $("#IsOnSale").is(":checked");
         const salesPriceVal = Number($("#SalePrice").val());
-        const tax = Number($("#Tax").val());
+        //const tax = Number($("#Tax").val());
         
         // verify prices
-        if (isNaN(unitPriceVal) || isNaN(salesPriceVal) || isNaN(tax)) {
+        if (isNaN(unitPriceVal) || isNaN(salesPriceVal)) {
             alert("Digits only allowed!");
             return;
         }
-        if (unitPriceVal < 0 || salesPriceVal < 0 || tax < 0) {
+        if (unitPriceVal < 0 || salesPriceVal < 0) {
             alert("Values must be positive!");
             return;
         }
@@ -191,7 +192,7 @@
         }
 
         if (unitPriceVal === 0) return;
-        const priceObj = calculatePrice(unitPriceVal, discountAvailable, salesPriceVal, tax);
+        const priceObj = calculatePrice(unitPriceVal, discountAvailable, salesPriceVal);
 
         $("#lblDisplayPrice").text("$" + priceObj.displayPrice.toFixed(2));
         $("#DisplayPrice").val(priceObj.displayPrice);

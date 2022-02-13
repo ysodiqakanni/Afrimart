@@ -14,6 +14,9 @@ namespace Afrimart.Dto.Carts
     {
         public string ProductName { get; set; }
         public string ProductImageUri { get; set; }
+
+        public string UrlFriendlyProductName => ProductName.Replace(" ", "-");
+
         public int Quantity { get; set; }
         public decimal UnitPrice { get; set; }
         public string ProductPSIN { get; set; }
