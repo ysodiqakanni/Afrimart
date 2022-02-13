@@ -53,6 +53,30 @@ namespace Afrimart.Controllers
              
             return RedirectToAction("Index");
         }
+        public async Task<IActionResult> AddToCartPartial(string psin, int quantity = 1)
+        {
+            var cartId = GetCartId();
+            var payload = new AddToCartRequestDto()
+            {
+                CartId = cartId,
+                PSIN = psin,
+                Count = quantity
+            };
+            await _requestManager.Send<AddToCartRequestDto, string>($"/api/Cart/", payload,
+                HttpMethod.Post);
+
+            // now get the updated cart
+            var apiResponse = await _requestManager.Send<string, BaseApiResponseDto<ShoppingCartResponseDto>>($"/api/Cart/{cartId}", null,
+                HttpMethod.Get);
+
+            var model = new CartPartialViewModel()
+            {
+                CartItems = apiResponse.Data.CartItems,
+                CartAmount = apiResponse.Data.CartAmount
+            };
+
+            return PartialView("_CartItemsPartial", model);
+        }
         public IActionResult RemoveFromCart(string psin, int quantity)
         {
             // get the cartItem by psin and cartId

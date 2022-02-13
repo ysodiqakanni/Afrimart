@@ -37,14 +37,7 @@ namespace Afrimart.Service.Implementations
                             NetAmount = product.SellingPrice * count
                         }
                     }
-                });
-                //await _uow.CartItemRepo.AddAsync(new CartItem()
-                //{
-                //    Quantity = count,
-                //    Product = product,
-                //    NetAmount = product.SellingPrice * count,
-                //    ShoppingCart = cart
-                //});
+                }); 
             }
             else
             {
@@ -52,7 +45,7 @@ namespace Afrimart.Service.Implementations
                 var cartItem = cart.CartItems.SingleOrDefault(x => x.ProductId == product.Id);
                 if (cartItem != null)
                 {
-                    cartItem.Quantity += count;
+                    cartItem.Quantity = count;
                     cartItem.NetAmount = cartItem.Quantity * product.SellingPrice; 
                 }
                 else
