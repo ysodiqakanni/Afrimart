@@ -51,7 +51,7 @@ namespace Afrimart.DataAccess.Repositories
         {
             var profileAddresses = _ctx.ShopperProfiles.Include(x => x.User)
                 .Include(x => x.Addresses)
-                .Single(x => string.Compare(x.User.Email, email, StringComparison.InvariantCultureIgnoreCase) == 0).Addresses;
+                .Single(x => x.User.Email.ToLower().Equals(email.ToLower())).Addresses;
             return profileAddresses;
         }
     }

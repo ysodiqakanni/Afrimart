@@ -48,14 +48,14 @@ namespace Afrimart.Controllers
         }
         public async Task<IActionResult> UpdateAddress(string returnUrl, bool hasAddress = true)
         {
-            var model = new SaveOrUpdateAddressViewModel();
+            var model = new SaveOrUpdateAddressViewModel(){SameAsShipping = true};
             if (hasAddress == true)
             {
                 // address exists, so pull and display existing 
                 var apiResponse = await _requestManager.Send<string, BaseApiResponseDto<AddressListResponseDto>>($"/api/Shopper/address", null,
                     HttpMethod.Get);
 
-                if (apiResponse.Success)
+                if (apiResponse.Success && apiResponse.Data.ShippingAddress != null && apiResponse.Data.BillingAddress != null)
                 {
                     model.ShippingAddress = new AddressViewModel()
                     {
@@ -79,6 +79,8 @@ namespace Afrimart.Controllers
                         ZipCode = apiResponse.Data.BillingAddress.ZipCode,
                         AddressType = apiResponse.Data.BillingAddress.AddressType
                     };
+                    model.IsEditMode = true;
+                    model.SameAsShipping = false;
                 }
             } 
 
@@ -98,6 +100,7 @@ namespace Afrimart.Controllers
                     return View(model);
                 }
 
+                return RedirectToAction("Index");
                 var apiResponse = await _requestManager.Send<SaveOrUpdateAddressDto, BaseApiResponseDto<string>>($"/api/Shopper/address", payload,
                     HttpMethod.Post);
                 if (apiResponse.Success)
@@ -115,6 +118,11 @@ namespace Afrimart.Controllers
             }
              
             return View(model);
+        }
+
+        public IActionResult GetBillingAddressPartial()
+        {
+            return PartialView("_BillingAddressPartial", new SaveOrUpdateAddressViewModel());
         }
     }
 

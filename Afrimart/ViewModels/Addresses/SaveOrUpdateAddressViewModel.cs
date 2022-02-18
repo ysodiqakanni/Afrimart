@@ -11,6 +11,7 @@ namespace Afrimart.ViewModels.Addresses
     public class SaveOrUpdateAddressViewModel
     {
         public bool SameAsShipping { get; set; }
+        public bool IsEditMode { get; set; }
         public string ReturnUrl { get; set; }
 
         [Required]
