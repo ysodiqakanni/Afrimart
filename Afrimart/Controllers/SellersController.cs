@@ -19,6 +19,7 @@ using Afrimart.Dto.Stores;
 namespace Afrimart.Controllers
 {
     [Authorize]
+    // Todo: properly manage authorize attributes for all actions (separate/restrict by roles)
     public class SellersController : Controller
     {
         private readonly IAuthenticationService _authenticationService;

@@ -18,6 +18,8 @@ namespace Afrimart.DataAccess
         IRoleRepo RoleRepo { get; set; }
         ICartRepo CartRepo { get; set; }
         ICartItemRepo CartItemRepo { get; set; }
+        IAddressRepo AddressRepo { get; set; }
+        IShopperProfileRepo ShopperProfileRepo { get; set; }
         Task SaveChangesAsync();
     }
     public class UnitOfWork : IUnitOfWork, IDisposable
@@ -31,6 +33,8 @@ namespace Afrimart.DataAccess
         public IRoleRepo RoleRepo { get; set; }
         public ICartRepo CartRepo { get; set; }
         public ICartItemRepo CartItemRepo { get; set; }
+        public IAddressRepo AddressRepo { get; set; }
+        public IShopperProfileRepo ShopperProfileRepo { get; set; }
 
 
         public UnitOfWork(AfrimartDbContext context)
@@ -44,6 +48,8 @@ namespace Afrimart.DataAccess
             ProductFileRepo = new ProductFileRepo(_context);
             CartRepo = new CartRepo(_context);
             CartItemRepo = new CartItemRepo(_context);
+            AddressRepo = new AddressRepo(_context);
+            ShopperProfileRepo = new ShopperProfileRepo(_context);
         }
 
         public async Task SaveChangesAsync()

@@ -10,4 +10,9 @@ namespace Afrimart.Dto
         GalleryImages,
         ExplainerVideo
     }
+    public enum AddressType
+    {
+        Shipping,
+        Billing
+    }
 }

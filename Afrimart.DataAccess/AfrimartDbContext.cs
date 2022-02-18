@@ -26,5 +26,7 @@ namespace Afrimart.DataAccess
         public DbSet<Store> Stores { get; set; }
         public DbSet<ShoppingCart> Carts { get; set; }
         public DbSet<CartItem> CartItems { get; set; }
+        public DbSet<ShopperProfile> ShopperProfiles { get; set; }
+        public DbSet<Address> Addresses { get; set; }
     }
 }

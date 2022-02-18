@@ -47,6 +47,8 @@ namespace Afrimart.Api
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IStoreService, StoreService>();
             services.AddScoped<ICartService, CartService>();
+            services.AddScoped<IShopperProfileService, ShopperProfileService>();
+
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddScoped<IAfrimartAuthorizationService, AfrimartAuthorizationService>();
             services.AddScoped<ITokenService, TokenService>();

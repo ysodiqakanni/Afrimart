@@ -49,6 +49,13 @@ namespace Afrimart.Service.Implementations
             user.PasswordSalt = passwordSalt; 
 
             var newUser = await _uow.UserRepo.AddAsync(user);
+            // let's create a shopper profile along
+            var shopperProfile = new ShopperProfile()
+            {
+                User = newUser
+            };
+            await _uow.ShopperProfileRepo.AddAsync(shopperProfile);
+
             await _uow.SaveChangesAsync();
 
             return newUser;

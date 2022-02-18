@@ -14,7 +14,7 @@ namespace Afrimart.DataAccess.Repositories
     }
     public class CartRepo : BaseRepository<ShoppingCart, AfrimartDbContext>, ICartRepo
     {
-        private AfrimartDbContext _ctx;
+        private readonly AfrimartDbContext _ctx;
         public CartRepo(AfrimartDbContext ctx) : base(ctx)
         {
             _ctx = ctx;
