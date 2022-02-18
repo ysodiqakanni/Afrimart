@@ -36,7 +36,7 @@ namespace Afrimart.Controllers
             var hasAddress = apiResponse.Data.AddressExists; 
             if (hasAddress == false)
             {
-                return RedirectToAction("UpdateAddress", new {hasAddress=false});
+                return RedirectToAction("UpdateAddress", new {hasAddress=false, returnUrl = "/Checkout/Index" });
             }
 
             // Todo: check what shipping methods the order qualifies for
@@ -57,28 +57,32 @@ namespace Afrimart.Controllers
 
                 if (apiResponse.Success && apiResponse.Data.ShippingAddress != null && apiResponse.Data.BillingAddress != null)
                 {
-                    model.ShippingAddress = new AddressViewModel()
-                    {
-                        LastName = apiResponse.Data.ShippingAddress.LastName,
-                        FirstName = apiResponse.Data.ShippingAddress.FirstName,
-                        AddressLine1 = apiResponse.Data.ShippingAddress.AddressLine1,
-                        AddressLine2 = apiResponse.Data.ShippingAddress.AddressLine2,
-                        City = apiResponse.Data.ShippingAddress.City,
-                        State = apiResponse.Data.ShippingAddress.State,
-                        ZipCode = apiResponse.Data.ShippingAddress.ZipCode,
-                        AddressType = apiResponse.Data.ShippingAddress.AddressType
-                    };
-                    model.BillingAddress = new AddressViewModel()
-                    {
-                        LastName = apiResponse.Data.BillingAddress.LastName,
-                        FirstName = apiResponse.Data.BillingAddress.FirstName,
-                        AddressLine1 = apiResponse.Data.BillingAddress.AddressLine1,
-                        AddressLine2 = apiResponse.Data.BillingAddress.AddressLine2,
-                        City = apiResponse.Data.BillingAddress.City,
-                        State = apiResponse.Data.BillingAddress.State,
-                        ZipCode = apiResponse.Data.BillingAddress.ZipCode,
-                        AddressType = apiResponse.Data.BillingAddress.AddressType
-                    };
+                    model.ShippingAddress = apiResponse.Data.ShippingAddress;
+                    model.BillingAddress = apiResponse.Data.BillingAddress;
+
+                    //model.ShippingAddress = new AddressViewModel()
+                    //{
+                    //    LastName = apiResponse.Data.ShippingAddress.LastName,
+                    //    FirstName = apiResponse.Data.ShippingAddress.FirstName,
+                    //    AddressLine1 = apiResponse.Data.ShippingAddress.AddressLine1,
+                    //    AddressLine2 = apiResponse.Data.ShippingAddress.AddressLine2,
+                    //    City = apiResponse.Data.ShippingAddress.City,
+                    //    State = apiResponse.Data.ShippingAddress.State,
+                    //    ZipCode = apiResponse.Data.ShippingAddress.ZipCode,
+                    //    AddressType = apiResponse.Data.ShippingAddress.AddressType
+                    //};
+                    //model.BillingAddress = new AddressViewModel()
+                    //{
+                    //    LastName = apiResponse.Data.BillingAddress.LastName,
+                    //    FirstName = apiResponse.Data.BillingAddress.FirstName,
+                    //    AddressLine1 = apiResponse.Data.BillingAddress.AddressLine1,
+                    //    AddressLine2 = apiResponse.Data.BillingAddress.AddressLine2,
+                    //    City = apiResponse.Data.BillingAddress.City,
+                    //    State = apiResponse.Data.BillingAddress.State,
+                    //    ZipCode = apiResponse.Data.BillingAddress.ZipCode,
+                    //    AddressType = apiResponse.Data.BillingAddress.AddressType
+                    //};
+
                     model.IsEditMode = true;
                     model.SameAsShipping = false;
                 }
@@ -89,9 +93,7 @@ namespace Afrimart.Controllers
 
         [HttpPost]
         public async Task<IActionResult> UpdateAddress(SaveOrUpdateAddressViewModel model)
-        {
-            var payload = new SaveOrUpdateAddressDto();
-
+        { 
             if (ModelState.IsValid)
             {
                 if (model.SameAsShipping == false && model.BillingAddress == null)
@@ -100,7 +102,12 @@ namespace Afrimart.Controllers
                     return View(model);
                 }
 
-                return RedirectToAction("Index");
+                var payload = new SaveOrUpdateAddressDto()
+                {
+                    SameAsShipping = model.SameAsShipping,
+                    ShippingAddress = model.ShippingAddress,
+                    BillingAddress = model.BillingAddress
+                };
                 var apiResponse = await _requestManager.Send<SaveOrUpdateAddressDto, BaseApiResponseDto<string>>($"/api/Shopper/address", payload,
                     HttpMethod.Post);
                 if (apiResponse.Success)

@@ -10,7 +10,7 @@ namespace Afrimart.DataAccess.Repositories
 { 
     public interface IShopperProfileRepo : IBaseRepository<ShopperProfile, AfrimartDbContext>
     {
-        ShopperProfile GetShopperProfile(string email);
+        ShopperProfile GetShopperProfileIncludeAddresses(string email);
         bool GetShopperAddressStatus(string email);
         List<Address> GetShopperAddresses(string email);
     }
@@ -22,25 +22,15 @@ namespace Afrimart.DataAccess.Repositories
             _ctx = ctx;
         }
 
-        public ShopperProfile GetShopperProfile(string email)
+        public ShopperProfile GetShopperProfileIncludeAddresses(string email)
         { 
             var user = _ctx.ShopperProfiles.Include(x => x.User)
-                .Single(x => string.Compare(x.User.Email, email, StringComparison.InvariantCultureIgnoreCase) == 0);
+                .Include(x => x.Addresses)
+                .Single(x => x.User.Email.ToLower().Equals(email.ToLower()));
             return user;
         }
         public bool GetShopperAddressStatus(string email)
-        {
-            //var profile = _ctx.ShopperProfiles.Include(x => x.User).First();
-            //if (profile.User == null)
-            //{
-            //    var cust = _ctx.Users.Where(x => x.Id == 1002).Single();
-            //    profile.User = cust;
-
-            //    _ctx.Update(profile);
-            //    _ctx.SaveChanges();
-            //}
-
-
+        { 
             var profileWithAddress = _ctx.ShopperProfiles.Include(x => x.User)
                 .Include(x => x.Addresses)
                 .SingleOrDefault(x => x.User.Email.ToLower().Equals(email.ToLower())

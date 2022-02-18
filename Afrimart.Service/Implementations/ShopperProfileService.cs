@@ -32,12 +32,13 @@ namespace Afrimart.Service.Implementations
 
         public async Task SaveOrUpdateAddresses(string userEmail, SaveOrUpdateAddressDto addressModel)
         {
-            IEnumerable<Address> addresses = GetUserAddresses(userEmail);
+            var profile = _uow.ShopperProfileRepo.GetShopperProfileIncludeAddresses(userEmail);
+            // IEnumerable<Address> addresses = GetUserAddresses(userEmail);
             
-            if (addresses.Any())
+            if (profile.Addresses.Any())
             {
                 // update
-                var shippingAddress = addresses.First(x => x.AddressType == AddressType.Shipping);
+                var shippingAddress = profile.Addresses.First(x => x.AddressType == AddressType.Shipping);
                 shippingAddress.AddressLine1 = addressModel.ShippingAddress.AddressLine1;
                 shippingAddress.AddressLine2 = addressModel.ShippingAddress.AddressLine2;
                 shippingAddress.City = addressModel.ShippingAddress.City;
@@ -46,7 +47,7 @@ namespace Afrimart.Service.Implementations
                 shippingAddress.FirstName = addressModel.ShippingAddress.FirstName;
                 shippingAddress.LastName = addressModel.ShippingAddress.LastName;
 
-                var billingAddress = addresses.First(x => x.AddressType == AddressType.Billing);
+                var billingAddress = profile.Addresses.First(x => x.AddressType == AddressType.Billing);
                 billingAddress.AddressLine1 = addressModel.BillingAddress.AddressLine1;
                 billingAddress.AddressLine2 = addressModel.BillingAddress.AddressLine2;
                 billingAddress.City = addressModel.BillingAddress.City;
@@ -62,9 +63,13 @@ namespace Afrimart.Service.Implementations
             {
                 // insert
                 var shippingAddress = ConvertDtoToAddress(addressModel.ShippingAddress);
+                shippingAddress.ShopperProfile = profile;
+
                 var billingAddress = addressModel.SameAsShipping
                     ? ConvertDtoToAddress(addressModel.ShippingAddress)
                     : ConvertDtoToAddress(addressModel.BillingAddress);
+                billingAddress.AddressType = AddressType.Billing;
+                billingAddress.ShopperProfile = profile;
 
                 await _uow.AddressRepo.AddAsync(shippingAddress);
                 await _uow.AddressRepo.AddAsync(billingAddress);

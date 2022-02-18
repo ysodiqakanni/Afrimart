@@ -4,7 +4,7 @@
             <!-- Steps-->
             <div class="pt-2 pb-3 mb-5">
                 <p>Shipping to: Sodiq Man, 100 Main str Alaska...</p>
-                <a href="@Url.Action("UpdateAddress","Checkout")">Change shipping address</a>
+                <a href="@Url.Action("UpdateAddress","Checkout", new {returnUrl="/Checkout/Index"})">Change shipping address</a>
                 <hr />
                 @*<p>Subtotal: $50</p>
                 <p>Shipping cost: $10</p>

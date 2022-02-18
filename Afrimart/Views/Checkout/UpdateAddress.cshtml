@@ -8,12 +8,12 @@
     <div class="row">
         <section class="col-lg-8">
 
-            <form asp-action="UpdateAddress">
+            <form asp-action="UpdateAddress" method="post">
+                @Html.AntiForgeryToken()
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-
-
-                <input asp-for="ReturnUrl" type="hidden" />
-                <input asp-for="IsEditMode" type="hidden" />
+                 
+                <input asp-for="ReturnUrl" type="hidden"/>
+                <input asp-for="IsEditMode" type="hidden"/>
                 <!-- Shipping address-->
                 <div>
                     <h2 class="h6 pt-1 pb-3 mb-3 border-bottom">Shipping address</h2>
@@ -134,19 +134,19 @@
                 <h6 class="mb-3 py-3 border-bottom">Billing address</h6>
                 <div class="form-check">
                     <input class="form-check-input" type="checkbox" asp-for="SameAsShipping">
-                    <label class="form-check-label" >Same as shipping address</label>
+                    <label class="form-check-label">Same as shipping address</label>
                 </div>
 
                 <!--Billing address-->
                 <div id="div-billing">
-                    <partial name="_BillingAddressPartial" , model="Model" />
+                    <partial name="_BillingAddressPartial" , model="Model"/>
                 </div>
 
                 <!-- Navigation (desktop)-->
                 <div class="d-none d-lg-flex pt-4 mt-3">
                     <div class="w-50 pe-3"><a class="btn btn-secondary d-block w-100" href="@Url.Action("Index", "ShoppingCart")"><i class="ci-arrow-left mt-sm-0 me-1"></i><span class="d-none d-sm-inline">Back to Cart</span><span class="d-inline d-sm-none">Back</span></a></div>
                     <div class="w-50 ps-2">
-                        <input class="btn btn-primary d-block w-100" type="submit" value="Update Address" />
+                        <input class="btn btn-primary d-block w-100" type="submit" value="Update Address"/>
                     </div>
                 </div>
             </form>
