@@ -14,5 +14,8 @@ namespace Afrimart.Dto
 
         public static int MAXIMUM_PER_PRODUCT_UNITS_PER_CART = 20;
         public static int PRODUCT_TRANSACTION_FEE_PERCENTAGE = 4;
+
+        public static decimal MINIMUM_STANDARD_SHIPPING_COST = 10;
+        public static decimal TEXAS_TAX_PERCENTAGE = 0.05m;
     }
 }

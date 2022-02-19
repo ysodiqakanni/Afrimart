@@ -84,6 +84,12 @@ namespace Afrimart.Controllers
             if (ModelState.IsValid)
             {
                 // Todo: call api
+                // get the price displayed to the user
+                // recalculate the price in backend and compare
+                // throw error if there's a difference
+
+                // on success delete the cart from the db and session
+
                 return RedirectToAction("OrderSubmitted");
             }
 

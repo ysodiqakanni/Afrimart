@@ -15,4 +15,18 @@ namespace Afrimart.Dto
         Shipping,
         Billing
     }
+
+    public enum ShippingMethod
+    {
+        StandardDelivery,
+        StorePickup
+    }
+    public enum OrderStatus
+    {
+        InProgress, // order just created 
+        Shipped,
+        Delayed,
+        Delivered, // Delivered by postman or Picked up by Owner at store
+        Canceled
+    }
 }
