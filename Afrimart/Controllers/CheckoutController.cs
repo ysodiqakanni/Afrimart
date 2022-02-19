@@ -7,8 +7,11 @@ using System.Threading.Tasks;
 using Afrimart.Common;
 using Afrimart.Dto;
 using Afrimart.Dto.Addresses;
+using Afrimart.Dto.Carts;
+using Afrimart.Services;
 using Afrimart.ViewModels.Addresses;
 using Afrimart.ViewModels.Orders;
+using Afrimart.ViewModels.Products;
 using Microsoft.AspNetCore.Authorization;
 using ServiceHelper.Requests;
 
@@ -19,33 +22,102 @@ namespace Afrimart.Controllers
     {
         private readonly IAfrimartAuthorizationService _authorizationService;
         private readonly IRequestManager _requestManager;
+        private readonly ISessionService _sessionService;
 
-        public CheckoutController(IAfrimartAuthorizationService authorizationService, IRequestManager requestManager)
+        public CheckoutController(IAfrimartAuthorizationService authorizationService, IRequestManager requestManager, ISessionService sessionService)
         {
             _authorizationService = authorizationService;
             _requestManager = requestManager;
+            _sessionService = sessionService;
         }
+
+        [Route("checkout")]
         public async Task<IActionResult> Index()
         {
             // if user doesn't have anything in cart, redirect to Cart page
-            
-            // if user doesn't have shipping and billing addresses, navigate to address page
-            var apiResponse = await _requestManager.Send<string, BaseApiResponseDto<AddressStatusResponseDto>>($"/api/Shopper/address/status", null,
-                HttpMethod.Get);
+            // Todo: fetch the shipping address and name, fetch cart items too
 
-            var hasAddress = apiResponse.Data.AddressExists; 
-            if (hasAddress == false)
-            {
-                return RedirectToAction("UpdateAddress", new {hasAddress=false, returnUrl = "/Checkout/Index" });
-            }
 
             // Todo: check what shipping methods the order qualifies for
             // This means we must set shipping methods for each product
 
             // NOTE: for now, we use just 2 static methods
 
+            string cartId = _sessionService.GetCartIdIfExists();
+            if (cartId == null) return RedirectToAction("Index", "ShoppingCart");
+
+            // if user doesn't have shipping and billing addresses, navigate to address page
+            var apiResponse = await _requestManager.Send<string, BaseApiResponseDto<CheckoutPageDataDto>>($"/api/Cart/checkout/{cartId}", null,
+                HttpMethod.Get);
+
+            var shippingAddress = apiResponse.Data.AddressData.ShippingAddress;
+            var cartSummary = apiResponse.Data.CartSummary;
+            if (shippingAddress == null)
+            {
+                return RedirectToAction("UpdateAddress", new {hasAddress=false, returnUrl = "/Checkout/Index" });
+            }
+
+            if (!cartSummary.CartItems.Any())
+            {
+                return RedirectToAction("Index", "ShoppingCart");
+            }
+
+           
+            var model = new OrderCheckoutViewModel()
+            {
+                AddressInfo =
+                    $"{shippingAddress.FirstName} {shippingAddress.LastName}, {shippingAddress.AddressLine1}, {shippingAddress.City}...",
+                CartSummary = new CartPartialViewModel()
+                {
+                    CartItems = cartSummary.CartItems,
+                    CartAmount = cartSummary.CartAmount
+                }
+            };
+
+            return View(model);
+        }
+
+        [Route("checkout")]
+        [HttpPost]
+        public async Task<IActionResult> Index(OrderCheckoutViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                // Todo: call api
+                return RedirectToAction("OrderSubmitted");
+            }
+
+            var cartId = _sessionService.GetCartIdIfExists();
+            var apiResponse = await _requestManager.Send<string, BaseApiResponseDto<CheckoutPageDataDto>>($"/api/Cart/checkout/{cartId}", null,
+                HttpMethod.Get);
+
+            var shippingAddress = apiResponse.Data.AddressData.ShippingAddress;
+            var cartSummary = apiResponse.Data.CartSummary;
+            if (shippingAddress == null)
+            {
+                return RedirectToAction("UpdateAddress", new { hasAddress = false, returnUrl = "/Checkout/Index" });
+            }
+
+            if (!cartSummary.CartItems.Any())
+            {
+                return RedirectToAction("Index", "ShoppingCart");
+            }
+
+            model.AddressInfo =
+                $"{shippingAddress.FirstName} {shippingAddress.LastName}, {shippingAddress.AddressLine1}, {shippingAddress.City}...";
+            model.CartSummary = new CartPartialViewModel()
+            {
+                CartItems = cartSummary.CartItems,
+                CartAmount = cartSummary.CartAmount
+            };
+            return View(model);
+        }
+
+        public async Task<IActionResult> OrderSubmitted()
+        {
             return View();
         }
+
         public async Task<IActionResult> UpdateAddress(string returnUrl, bool hasAddress = true)
         {
             var model = new SaveOrUpdateAddressViewModel(){SameAsShipping = true};

@@ -5,6 +5,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using Afrimart.Dto;
 using Afrimart.Dto.Carts;
+using Afrimart.Services;
 using Afrimart.ViewModels.Products;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -15,17 +16,19 @@ namespace Afrimart.Components
     public class ShoppingCartSummary: ViewComponent
     {
         private readonly IRequestManager _requestManager;
+        private readonly ISessionService _sessionService;
 
 
-        public ShoppingCartSummary(IRequestManager requestManager)
+        public ShoppingCartSummary(IRequestManager requestManager, ISessionService sessionService)
         {
             _requestManager = requestManager;
+            _sessionService = sessionService;
         }
 
         public async Task<IViewComponentResult> InvokeAsync()
         { 
             var model = new CartPartialViewModel();
-            string cartId = GetCartIdIfExists();
+            string cartId = _sessionService.GetCartIdIfExists();
 
             if (string.IsNullOrWhiteSpace(cartId) == false)
             {
@@ -39,22 +42,6 @@ namespace Afrimart.Components
                 };
             } 
             return View(model);
-        }
-        public string GetCartIdIfExists()
-        {
-
-            var cartId = HttpContext.Session.GetString(AfrimartConstants.CART_ID_SESSION_KEY);
-
-            // what if user is logged in and has an associated cart in the db?
-            // but somehow the cart ID is lost in session.
-            // So...
-            if (string.IsNullOrWhiteSpace(cartId))
-            {
-                // so cart ID will be the user ID if logged in, or null otherwise
-                cartId = HttpContext.User.Identity.Name;
-            }
-           
-            return cartId;
-        }
+        } 
     }
 }

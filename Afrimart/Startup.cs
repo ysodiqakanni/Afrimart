@@ -40,6 +40,7 @@ namespace Afrimart
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddScoped<IAuthenticationService, AuthenticationService>();
             services.AddScoped<IAfrimartAuthorizationService, AfrimartAuthorizationService>();
+            services.AddScoped<ISessionService, SessionService>();
 
             //services.ConfigureApplicationCookie(o =>
             //{

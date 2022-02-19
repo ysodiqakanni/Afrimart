@@ -19,12 +19,14 @@ namespace Afrimart.Api.Controllers
     public class ShopperController : ControllerBase
     {
         private readonly IAfrimartAuthorizationService _authorizationService;
-        private readonly IShopperProfileService _shopperProfileService; 
+        private readonly IShopperProfileService _shopperProfileService;
+        private readonly IAddressService _addressService;
 
-        public ShopperController(IAfrimartAuthorizationService authorizationService, IShopperProfileService shopperProfileService)
+        public ShopperController(IAfrimartAuthorizationService authorizationService, IShopperProfileService shopperProfileService, IAddressService addressService)
         {
             _authorizationService = authorizationService;
-            _shopperProfileService = shopperProfileService; 
+            _shopperProfileService = shopperProfileService;
+            _addressService = addressService;
         }
         [HttpGet("address/status")]
         public async Task<IActionResult> GetAddressStatus()
@@ -50,8 +52,8 @@ namespace Afrimart.Api.Controllers
             var addresses = _shopperProfileService.GetUserAddresses(email);
             if (addresses.Any())
             {
-                response.ShippingAddress = ConvertToDto(addresses.First(x => x.AddressType == AddressType.Shipping));
-                response.BillingAddress = ConvertToDto(addresses.First(x => x.AddressType == AddressType.Billing));
+                response.ShippingAddress = _addressService.ConvertToDto(addresses.First(x => x.AddressType == AddressType.Shipping));
+                response.BillingAddress = _addressService.ConvertToDto(addresses.First(x => x.AddressType == AddressType.Billing));
             } 
 
             return Ok(new BaseApiResponseDto<AddressListResponseDto>()
@@ -80,20 +82,6 @@ namespace Afrimart.Api.Controllers
                 Success = true
             });
         } 
-
-        private AddressDto ConvertToDto(Address address)
-        {
-            return new AddressDto()
-            {
-                AddressLine1 = address.AddressLine1,
-                AddressLine2 = address.AddressLine2,
-                City = address.City,
-                State = address.State,
-                ZipCode = address.ZipCode,
-                FirstName = address.FirstName,
-                LastName = address.LastName,
-                Id = address.Id
-            };
-        }
+         
     }
 }
