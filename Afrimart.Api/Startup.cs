@@ -20,6 +20,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using ServiceHelper.Token;
 
 namespace Afrimart.Api
 {
@@ -42,10 +43,16 @@ namespace Afrimart.Api
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             
             services.AddScoped<IProductCategoryService, ProductCategoryService>();
+            services.AddScoped<IProductService, ProductService>();
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IStoreService, StoreService>();
+            services.AddScoped<ICartService, CartService>();
+            services.AddScoped<IShopperProfileService, ShopperProfileService>();
+            services.AddScoped<IAddressService, AddressService>();
+
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddScoped<IAfrimartAuthorizationService, AfrimartAuthorizationService>();
+            services.AddScoped<ITokenService, TokenService>();
 
             // auth
             services.AddAuthentication(x =>

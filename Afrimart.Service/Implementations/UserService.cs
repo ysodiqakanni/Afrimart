@@ -20,7 +20,7 @@ namespace Afrimart.Service.Implementations
 
         public async Task<User> GetUserByEmailAndPassword(string email, string password)
         { 
-            var user = _uow.UserRepo.Find(x => x.Email.ToLower().Equals(email.ToLower())).SingleOrDefault();
+            var user = await _uow.UserRepo.GetSingleUserWithRolesByEmail(email); //.Find(x => x.Email.ToLower().Equals(email.ToLower())).SingleOrDefault();
             if(user == null)
             {
                 return null;
@@ -49,6 +49,13 @@ namespace Afrimart.Service.Implementations
             user.PasswordSalt = passwordSalt; 
 
             var newUser = await _uow.UserRepo.AddAsync(user);
+            // let's create a shopper profile along
+            var shopperProfile = new ShopperProfile()
+            {
+                User = newUser
+            };
+            await _uow.ShopperProfileRepo.AddAsync(shopperProfile);
+
             await _uow.SaveChangesAsync();
 
             return newUser;

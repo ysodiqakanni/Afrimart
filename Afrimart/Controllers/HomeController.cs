@@ -6,12 +6,17 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Net.Http;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using Afrimart.Dto;
+using Afrimart.Dto.Public;
 using Afrimart.Services;
+using Afrimart.ViewModels.Home;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Http;
+using ServiceHelper.Requests;
 
 namespace Afrimart.Controllers
 {
@@ -19,106 +24,54 @@ namespace Afrimart.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private readonly Services.IAuthenticationService _authenticationService;
+        private readonly IRequestManager _requestManager;
 
-        public HomeController(ILogger<HomeController> logger, Services.IAuthenticationService authenticationService)
+        public HomeController(ILogger<HomeController> logger, Services.IAuthenticationService authenticationService, IRequestManager requestManager)
         {
             _logger = logger;
             _authenticationService = authenticationService;
+            _requestManager = requestManager;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            // Index view model
+            // get trending products -> Fetch top 8 products order by sales count desc
+            // imgUrl, prodName, categName, catId, price, rating, 
+            // for quick view: galleryImgUrls, IsOnSale, salesPrice, prodCount, description
+            // 3 most popular categories to showcase (logic for this??
+            // categoryImg, name, 
+            // 1 special category: (maybe Ankara for now) logic??
+            // pull top 12 products in the category
+
+            var apiResponse = await _requestManager.Send<string, BaseApiResponseDto<HomepageDataResponseDto>>("/api/Home/default", null,
+                HttpMethod.Get);
+
+            var model = new HomepageViewModel()
+            {
+                SpecialCategory = apiResponse.Data.SpecialCategory,
+                PopularCategories = apiResponse.Data.PopularCategories,
+                SpecialCategoryProducts = apiResponse.Data.SpecialCategoryProducts,
+                TrendingProducts = apiResponse.Data.TrendingProducts
+            };
+            return View(model);
         }
 
-        //[AllowAnonymous]
-        //[Route("login")]
-        //[HttpPost]
-        //public async Task<IActionResult> Login(UserModel userModel)
+        public async Task<IActionResult> GetQuickViewPartialView(string psin)
+        {
+            var apiResponse = await _requestManager.Send<string, BaseApiResponseDto<HomeProductCard>>($"/api/Home/product/{psin}", null,
+                HttpMethod.Get);
+            
+            return PartialView("_ProductQuickView", apiResponse.Data);
+        }
+
+        //public async Task<IActionResult> Logout()
         //{
+        //    await HttpContext.SignOutAsync(
+        //        CookieAuthenticationDefaults.AuthenticationScheme);
 
-        //    // use cookie based auth: https://docs.microsoft.com/en-us/aspnet/core/security/authentication/cookie?view=aspnetcore-6.0
-        //    if (string.IsNullOrEmpty(userModel.UserName) || string.IsNullOrEmpty(userModel.Password))
-        //    {
-        //        return (RedirectToAction("Error"));
-        //    }
-
-        //    var loginResponse = await _authenticationService.Login(userModel.UserName, userModel.Password);
-        //    if (!loginResponse.Success)
-        //    {
-        //        ModelState.AddModelError(string.Empty, "Invalid login attempt.");
-        //        return RedirectToAction("Index");
-        //    }
-
-        //    var user = new UserModel()
-        //    {
-        //        UserName = loginResponse.User.Email,
-        //        Email = loginResponse.User.Email,
-        //        FullName = loginResponse.User.FullName 
-        //    }; 
-
-        //    #region snippet1
-        //    var claims = new List<Claim>
-        //        {
-        //            new Claim(ClaimTypes.Name, user.Email),
-        //            new Claim("FullName", user.FullName),
-        //            new Claim(ClaimTypes.Role, "Admin"),
-        //        };
-
-        //    var claimsIdentity = new ClaimsIdentity(
-        //        claims, CookieAuthenticationDefaults.AuthenticationScheme);
-
-        //    //var clmidentity = new ClaimsIdentity(new[] {
-        //    //    new Claim(ClaimTypes.Name, user.Email),
-        //    //    new Claim(ClaimTypes.Role, "admin")
-        //    //}, CookieAuthenticationDefaults.AuthenticationScheme);
-
-        //    var authProperties = new AuthenticationProperties
-        //    {
-        //        //AllowRefresh = <bool>,
-        //        // Refreshing the authentication session should be allowed.
-
-        //        ExpiresUtc = DateTimeOffset.UtcNow.AddMinutes(10),
-        //        // The time at which the authentication ticket expires. A 
-        //        // value set here overrides the ExpireTimeSpan option of 
-        //        // CookieAuthenticationOptions set with AddCookie.
-
-        //        //IsPersistent = true,
-        //        // Whether the authentication session is persisted across 
-        //        // multiple requests. When used with cookies, controls
-        //        // whether the cookie's lifetime is absolute (matching the
-        //        // lifetime of the authentication ticket) or session-based.
-
-        //        //IssuedUtc = <DateTimeOffset>,
-        //        // The time at which the authentication ticket was issued.
-
-        //        //RedirectUri = <string>
-        //        // The full path or absolute URI to be used as an http 
-        //        // redirect response value.
-        //    };
-
-        //    await HttpContext.SignInAsync(
-        //        CookieAuthenticationDefaults.AuthenticationScheme,
-        //        new ClaimsPrincipal(claimsIdentity),
-        //        authProperties);
-        //    #endregion
-
-        //    _logger.LogInformation("User {Email} logged in at {Time}.",
-        //        user.Email, DateTime.UtcNow);
-
-        //    // return LocalRedirect(Url.GetLocalUrl(returnUrl));
-
-        //    return RedirectToAction("Privacy");
-
+        //    return View();
         //}
-
-        public async Task<IActionResult> Logout()
-        {
-            await HttpContext.SignOutAsync(
-                CookieAuthenticationDefaults.AuthenticationScheme);
-
-            return View();
-        }
 
         [Authorize]
         public IActionResult Privacy()
@@ -169,5 +122,5 @@ namespace Afrimart.Controllers
                 return null;
             }
         }
-    }
+    } 
 }

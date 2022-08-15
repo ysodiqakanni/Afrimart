@@ -15,7 +15,10 @@ namespace DataAccess.Repositories
 
         T Get(object id);
         Task<T> AddAsync(T entity);
+        Task AddRangeAsync(List<T> entities);
         void Update(T entity);
         IQueryable<T> Find(Expression<Func<T, bool>> predicate);
+        IQueryable<T> FindInclude(Expression<Func<T, bool>> predicate, List<string> includeProperties);
+        T GetInclude(Expression<Func<T, bool>> predicate, List<string> includeProperties);
     }
 }

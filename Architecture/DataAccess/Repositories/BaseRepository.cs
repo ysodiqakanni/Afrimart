@@ -38,10 +38,21 @@ namespace DataAccess.Repositories
             entity.DateCreated = DateTime.UtcNow;
             entity.LastModified = DateTime.UtcNow;
             entity.IsDeleted = false;
+             
+            var savedObj =_dbset.Add(entity); 
 
-            _dbset.Add(entity); 
+            return savedObj.Entity;
+        }
+        public async Task AddRangeAsync(List<TEntity> entities)
+        {
+            entities.ForEach(e =>
+            {
+                e.DateCreated = DateTime.UtcNow;
+                e.LastModified = DateTime.UtcNow;
+                e.IsDeleted = false;
+            }); 
 
-            return entity;
+            await _dbset.AddRangeAsync(entities); 
         }
         public void Update(TEntity entity)
         {
@@ -66,7 +77,31 @@ namespace DataAccess.Repositories
         {
             return _dbContext.Set<TEntity>().Where(t => t.IsDeleted == false);
         }
-        
+
+        /// not working perfectly
+        public IQueryable<TEntity> FindInclude(Expression<Func<TEntity, bool>> predicate, List<string> includeProperties)
+        {
+            var data = _dbContext.Set<TEntity>();
+            foreach (var prop in includeProperties)
+            {
+                data.Include(prop);
+            }
+
+            //var test = _dbContext.Set<TEntity>().Include("CartItems").FirstOrDefault();
+            return data.Where(predicate).Where(t => t.IsDeleted == false);
+        }
+
+        // not working perfectly
+        public TEntity GetInclude(Expression<Func<TEntity, bool>> predicate, List<string> includeProperties)
+        {
+            var data = _dbContext.Set<TEntity>();
+            foreach (var prop in includeProperties)
+            {
+                data.Include(prop);
+            } 
+
+            return data.Where(predicate).SingleOrDefault(t => t.IsDeleted == false);
+        }
 
     }
 }

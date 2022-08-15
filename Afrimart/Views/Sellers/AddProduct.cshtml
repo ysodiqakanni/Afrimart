@@ -1,0 +1,226 @@
+﻿@using Afrimart.Dto
+@model Afrimart.ViewModels.Sellers.AddProductViewModel
+@{
+    ViewData["Title"] = "Complete profile";
+    Layout = "_SellerLayout";
+}
+
+<!-- Dashboard header-->
+<partial name="_DashboardHeader" model="Model.DashboardHeaderViewModel" />
+<div class="container mb-5 pb-3">
+    <div class="bg-light shadow-lg rounded-3 overflow-hidden">
+        <div class="row">
+            <!-- Sidebar-->
+            <partial name="_Sidebar" />
+            <!-- Content-->
+            <section class="col-lg-8 pt-lg-4 pb-4 mb-3">
+                <form asp-action="AddProduct" enctype="multipart/form-data">
+                    <div class="pt-2 px-4 ps-lg-0 pe-xl-5">
+
+
+                        <!-- Title-->
+                        <div class="d-sm-flex flex-wrap justify-content-between align-items-center pb-2">
+                            <h2 class="h3 py-2 me-2 text-center text-sm-start">Add New Product</h2>
+                            <div class="py-2">
+
+                                <select class="form-select me-2" asp-for="SelectedCategory" asp-items="@Model.ProductCategories">
+                                    <option value="">Select</option>
+                                </select>
+                                <span asp-validation-for="SelectedCategory" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <div class="mb-3 pb-2">
+                            <label class="form-label">Product name</label>
+                            <input class="form-control" type="text" asp-for="Name">
+                            <span asp-validation-for="Name" class="text-danger"></span>
+                            <div class="form-text">Maximum 100 characters. No HTML or emoji allowed.</div>
+                        </div>
+                        <div class="file-drop-area mb-3">
+                            <div class="file-drop-icon ci-cloud-upload"></div><span class="file-drop-message">Drag and drop here to upload product screenshot</span>
+                            <input class="file-drop-input" asp-for="DisplayImage" type="file" accept="image/png, image/gif, image/jpeg">
+                            <button class="file-drop-btn btn btn-primary btn-sm mb-2" type="button">Or select file</button>
+                            <span asp-validation-for="DisplayImage" class="text-danger"></span>
+                            <div class="form-text">1000 x 800px ideal size for hi-res displays</div>
+                        </div>
+                        <div class="mb-3 py-2">
+                            <label class="form-label">Product description</label>
+                            <textarea class="form-control" rows="6" asp-for="Description"></textarea>
+                            <span asp-validation-for="Description" class="text-danger"></span>
+                            @*<div class="bg-secondary p-3 fs-ms rounded-bottom"><span class="d-inline-block fw-medium me-2 my-1">Markdown supported:</span><em class="d-inline-block border-end pe-2 me-2 my-1">*Italic*</em><strong class="d-inline-block border-end pe-2 me-2 my-1">**Bold**</strong><span class="d-inline-block border-end pe-2 me-2 my-1">- List item</span><span class="d-inline-block border-end pe-2 me-2 my-1">##Heading##</span><span class="d-inline-block">--- Horizontal rule</span></div>*@
+                        </div>
+                        <div class="mb-3 py-2">
+                            <label class="form-label" for="unp-product-tags">Product tags</label>
+                            <textarea class="form-control" rows="4" asp-for="Tags"></textarea>
+                            <div class="form-text">Up to 10 keywords that describe your item. Tags should all be in lowercase and separated by commas.</div>
+                        </div>
+                        <div class="mb-3 pb-2">
+                            <label class="form-label" for="unp-product-files">Upload more product images</label>
+                            <input class="form-control" type="file" asp-for="GalleryImages" multiple="multiple" accept="image/png, image/gif, image/jpeg">
+                            <div class="form-text">Maximum file size is 3MB</div>
+                            <span asp-validation-for="GalleryImages" class="text-danger"></span>
+                        </div>
+                        <div class="row">
+                            <label class="form-label" for="unp-standard-price">Pricing type</label>
+                            <div class="col-sm-6 mb-3">
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="checkbox" asp-for="IsWeighted" onchange="onWeightedCheck(this)">
+                                    <label class="form-check-label" for="ex-check-4">Check if product is weighted</label>
+                                </div>
+                            </div>
+                            <div id="divUnit" style="display:none" class="col-sm-6 mb-3">
+                                <label class="form-label" for="unp-extended-price">Unit of measurement</label>
+                                <input class="form-control" type="text" asp-for="WeightUnit">
+                                <div class="form-text">Common units are lbs, gms, oz, fl etc.</div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6 mb-3">
+                                <label class="form-label" for="unp-standard-price">Price per unit</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="ci-dollar"></i></span>
+                                    <input class="form-control" type="text" asp-for="UnitPrice" onchange="onUnitPriceChange()">
+                                </div>
+                            </div>
+                            <div class="col-sm-6 mb-1">
+                                <label class="form-check-label" for="ex-check-4">Sales option</label>
+
+                                <div class="form-check form-check-inline input-group">
+                                    <input class="form-check-input" type="checkbox" asp-for="IsOnSale" onchange="onSalesCheck(this)">
+                                    <label class="form-check-label" for="ex-check-4">On Sale?</label>
+                                </div>
+                            </div>
+                            <div id="divSalesOption" style="display:none" class="col-sm-6 mb-2">
+                                <label class="form-label" for="unp-extended-price">Sales price</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="ci-dollar"></i></span>
+                                    <input class="form-control" type="text" asp-for="SalePrice" onchange="onUnitPriceChange()">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            @*<div class="col-sm-6 mb-3">
+                                <label class="form-label" for="unp-standard-price">Tax</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="ci-dollar"></i></span>
+                                    <input class="form-control" type="text" asp-for="Tax" onchange="onUnitPriceChange()">
+                                </div>
+                            </div>*@
+                            <div class="col-sm-6 mb-3">
+                                <label class="form-label" for="unp-standard-price">Quantity Available</label>
+                                <div class="input-group">
+                                    <input class="form-control" type="text" asp-for="QuantityAvailable">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6 mb-3">
+                                <label class="form-label" for="unp-standard-price">Platform Fee:</label> <br />
+                                <label class="form-label" style="font-size: 2rem" id="PlatformFee" asp-for="PlatformFee">4%</label>
+                            </div>
+                            <div class="col-sm-6 mb-3">
+                                <label class="form-label" for="unp-standard-price">Display Value</label> <br />
+                                <input type="hidden" asp-for="DisplayPrice"/>
+                                <label class="form-label" style="font-size: 2rem" id="lblDisplayPrice">$0.00</label>
+                            </div>
+                        </div>
+
+                        <button class="btn btn-primary d-block w-100" type="submit"><i class="ci-cloud-upload fs-lg me-2"></i>Upload Product</button>
+                    </div>
+                </form>
+
+            </section>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+
+<script type="text/javascript"> 
+    function onWeightedCheck(el) { 
+        if ($(el).is(":checked")) {
+            $("#divUnit").show();
+        } else {
+            $("#divUnit").hide();
+        } 
+    }
+    function onSalesCheck(el) { 
+        if ($(el).is(":checked")) {
+            $("#divSalesOption").show();
+            
+        } else {
+            $("#divSalesOption").hide(); 
+        }
+        onUnitPriceChange();
+    }
+
+
+    function calculatePrice(up, onSale, sp) {
+        if (sp === 0) sp = up;
+
+        let price = onSale === true ? sp : up;
+        const platformFee = price * (@AfrimartConstants.PRODUCT_TRANSACTION_FEE_PERCENTAGE * 0.01); // 4%
+        price += platformFee;
+
+        return {
+            displayPrice: price,
+            fee: platformFee
+        };
+    }
+    function onUnitPriceChange() {
+        const unitPriceVal = Number($("#UnitPrice").val());
+        const discountAvailable = $("#IsOnSale").is(":checked");
+        const salesPriceVal = Number($("#SalePrice").val());
+        //const tax = Number($("#Tax").val());
+        
+        // verify prices
+        if (isNaN(unitPriceVal) || isNaN(salesPriceVal)) {
+            alert("Digits only allowed!");
+            return;
+        }
+        if (unitPriceVal < 0 || salesPriceVal < 0) {
+            alert("Values must be positive!");
+            return;
+        }
+        if (discountAvailable && (unitPriceVal < salesPriceVal)) {
+            alert("Sales price must be less than regular unit price");
+
+            return;
+        }
+
+        if (unitPriceVal === 0) return;
+        const priceObj = calculatePrice(unitPriceVal, discountAvailable, salesPriceVal);
+
+        $("#lblDisplayPrice").text("$" + priceObj.displayPrice.toFixed(2));
+        $("#DisplayPrice").val(priceObj.displayPrice);
+
+        $("#PlatformFee").text("$" + priceObj.fee.toFixed(2) + " (4%)");
+    }
+
+
+
+    // warn on large files upload
+    var displayImgField = document.getElementById("DisplayImage"); 
+    displayImgField.onchange = function() {
+        if (this.files[0].size > 4194304){ // 4MB max
+            alert("File cannot be greater than 4MB!");
+            this.value = "";
+        };
+    };
+
+    // similarly for gallery images
+    var galleryField = document.getElementById("GalleryImages"); 
+    galleryField.onchange = function () {
+        for (let file of this.files) {
+            if (file.size > 3145728){ // 3MB max
+                alert("File cannot be greater than 3MB!");
+                this.value = "";
+                return;
+            };
+        }
+       
+    };
+</script>

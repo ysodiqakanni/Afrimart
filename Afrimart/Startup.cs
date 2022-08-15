@@ -30,10 +30,23 @@ namespace Afrimart
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
+            services.AddSession(options =>
+            {
+                options.IdleTimeout = TimeSpan.FromSeconds(10);
+                options.Cookie.HttpOnly = true;
+                options.Cookie.IsEssential = true;
+            });
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddScoped<IAuthenticationService, AuthenticationService>();
             services.AddScoped<IAfrimartAuthorizationService, AfrimartAuthorizationService>();
+            services.AddScoped<ISessionService, SessionService>();
+
+            //services.ConfigureApplicationCookie(o =>
+            //{
+            //    o.ExpireTimeSpan = TimeSpan.FromSeconds(15);
+            //    o.SlidingExpiration = true;
+            //});
 
             services.WebAuthSetup();
             services.HttpClientSetup("https://localhost:44314/api");
@@ -45,6 +58,17 @@ namespace Afrimart
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                //app.UseStatusCodePages(context => {
+                //    var request = context.HttpContext.Request;
+                //    var response = context.HttpContext.Response;
+
+                //    if (response.StatusCode == (int)HttpStatusCode.Unauthorized)
+                //    {
+                //        response.Redirect("/account/login");
+                //    }
+
+                //    return Task.CompletedTask;
+                //});
             }
             else
             {
@@ -67,8 +91,8 @@ namespace Afrimart
             app.UseRouting();
 
             app.UseAuth();
+            app.UseSession();
 
-        
 
             app.UseEndpoints(endpoints =>
             {

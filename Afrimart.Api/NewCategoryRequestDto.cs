@@ -9,8 +9,11 @@ namespace Afrimart.Api
     public class NewCategoryRequestDto
     {
         public int ParentCategoryId { get; set; }
+
         [Required]
         public string Name { get; set; }
         public string Description { get; set; }
+
+        public string ImageUri { get; set; }
     }
 }

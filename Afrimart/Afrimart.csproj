@@ -7,6 +7,7 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="3.1.18" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.5" />
   </ItemGroup>
 
   <ItemGroup>
@@ -14,6 +15,10 @@
     <ProjectReference Include="..\Afrimart.Dto\Afrimart.Dto.csproj" />
     <ProjectReference Include="..\Architecture\Extensions\Extensions.csproj" />
     <ProjectReference Include="..\Architecture\ServiceHelper\ServiceHelper.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="wwwroot\NewFolder\" />
   </ItemGroup>
 
 </Project>
